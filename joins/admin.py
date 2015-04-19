@@ -5,7 +5,7 @@ from .models import Join
 
 class JoinAdmin(admin.ModelAdmin):
 	#Default is __unicode__ only
-	list_display = ['__unicode__', 'email', 'timestamp', 'updated']  
+	list_display = ['__unicode__', 'email', 'friend', 'timestamp', 'updated']  
 	class Meta:
 			model = Join
 

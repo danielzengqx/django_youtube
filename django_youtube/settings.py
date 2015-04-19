@@ -78,6 +78,8 @@ USE_L10N = True
 
 USE_TZ = True
 
+#SHARE_URL = "www.lauhchwithcode.com/?ref="
+SHARE_URL = "127.0.0.1:1234/?ref="
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
@@ -86,11 +88,26 @@ TEMPLATE_DIRS = {
 
     }
 
-STATIC_URL = '/static/'
+#Daniel: I think this is the reference for the {% static %}
+STATIC_URL = '/main-static/'
 
-STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'static')
+#STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'static')
+#STATICFILES_DIRS = (
+#        os.path.join(BASE_DIR, 'static'),
+#    )
+#STATIC_ROOT = '/Users/daniel/daniel_code/project_mysite/django_youtube/static/static_root'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static', 'static_root')
+
 STATICFILES_DIRS = (
-        os.path.join(BASE_DIR, 'static'),
+    os.path.join(BASE_DIR, 'static', 'static_dirs'),
+    #'/Users/daniel/daniel_code/project_mysite/django_youtube/static/static_dirs',
+    #'/Users/daniel/daniel_code/project_mysite/django_youtube/static/static_root',
     )
 
-print "here is "+ STATIC_ROOT
+MEDIA_ROOT = os.path.join(BASE_DIR, 'static', 'media')
+MEDIA_URL = '/media/'
+
+
+print "here is BASE_DIR:"
+print BASE_DIR
+
