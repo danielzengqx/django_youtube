@@ -60,7 +60,11 @@ def home(request):
 	try:
 		join_id = request.session['ref']
 		obj = Join.objects.get(id=join_id)
+
 		print "the obj is %s" % (obj.email)
+		print "friends recommended by %s are as followed:" % obj
+		print Join.objects.filter(friend=obj).count()
+		print obj.referral.all().count()
 
 	except:
 		obj = None
@@ -81,9 +85,8 @@ def home(request):
 				new_join_old.save() 
 
 			#print all "friends" that joined as a result of main sharer email
-			print "friends recommended by %s are as followed:" % obj
-			print Join.objects.filter(friend=obj).count()
-			print obj.referral.all().count()
+
+
 
 			#redirect here
 			return HttpResponseRedirect("/%s" % new_join_old.ref_id)
