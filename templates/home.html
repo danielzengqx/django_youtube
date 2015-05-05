@@ -1,9 +1,27 @@
 {% extends "base.html" %}
 {% load staticfiles %}
 
+{% block styles %}
+  <style>
+    body {
+      border-top: 5px solid #3CAEF4;
+/*      min-height: 5000px;
+      min-width: 5000px;*/
+      background: url("{% static 'img/beach.jpg' %}" ) no-repeat center center fixed ; 
+      -webkit-background-size: cover;
+      -moz-background-size: cover;
+      -o-background-size: cover;
+      background-size: cover;
+    }
+  </style>
+{%endblock %}
+
+
 {% block content %}
 
     <!-- Main jumbotron for a primary marketing message or call to action -->
+    <div class="row"> <!-- Daniel add: 为了达到左右满屏的效果。-->
+
     <div class="jumbotron" style='background-color:white;'>
       <div class="container">
         <div class="col-sm-6">
@@ -16,9 +34,11 @@
         </div>
       </div>
     </div>
-<hr/>
+
+</div><!-- Daniel End -->
+
 <div class='container' style='text-align:center;'>
-<h1>Hello World!</h1>	
+<h1>Welcome Home!</h1>	
 
 
 <form method="POST" action=""> {% csrf_token %}
@@ -27,6 +47,15 @@
 <input type='submit' value='Join' class='btn'>
 </form>
 </div>
+
+<div class='row' style='text-align:center; background-color:white; margin-top: 80px; min-height:200px;'>
+  <div class="container">
+    <!-- <div class="col-sm-12"> -->
+      <h1>Hello </h1>  
+    <!-- </div> -->
+  </div>
+</div>
+
 {% endblock %}
 
  

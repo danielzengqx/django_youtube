@@ -3,6 +3,7 @@ from django.contrib import admin
 
 from django.conf import settings
 from django.conf.urls.static import static
+admin.autodiscover()
 
 urlpatterns = patterns('',
     # Examples:
@@ -11,6 +12,7 @@ urlpatterns = patterns('',
 
  	url(r'^admin/', include(admin.site.urls)),
     url(r'^$', 'joins.views.home', name='home'),
+    # url(r'^testhome', 'django_youtube.views.testhome', name='testhome'),
     url(r'^(?P<ref_id>.*)$', 'joins.views.share', name='home'),
 
 )

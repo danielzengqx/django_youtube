@@ -50,6 +50,10 @@
       color: white;
     } 
   </style>
+
+  {% block styles %}
+  {% endblock%}
+
   <body>
 
 
@@ -63,16 +67,13 @@
 
 	{% endblock %}
 
-
-    <div class="container">
-
-
-      <hr>
-
-      <footer>
-        <p>&copy; Company 2014</p>
-      </footer>
-    </div> <!-- /container -->
+  <div class="row" style="margin-top:200px;background-color:grey; ">
+      <div class="container" style="text-align:center; padding:20px;">
+        <footer>
+          <p>&copy; Company 2015</p>
+        </footer>
+      </div> <!-- /container -->  
+  </div>
 
 
     <!-- Bootstrap core JavaScript
