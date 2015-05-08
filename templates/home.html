@@ -13,6 +13,13 @@
       -o-background-size: cover;
       background-size: cover;
     }
+
+    .jumbotron h1{
+      font-weight: 100;
+    }
+    .jumbotron p{
+      font-weight: 100;
+    }
   </style>
 {%endblock %}
 
@@ -38,14 +45,30 @@
 </div><!-- Daniel End -->
 
 <div class='container' style='text-align:center;'>
-<h1>Welcome Home!</h1>	
+  <div class="col-sm-6 col-sm-offset-3" >
+    <h1>Welcome Home!</h1>	
+
+    <form class="form-horizontal" method="POST" action=""> {% csrf_token %}
+      <div class="form-group form-group-lg">
+        <!-- {{ form.as_p }} -->
+        {% if form.email.errors %}
+          {% for err in form.email.errors %}
+            <div class="alert alert-danger" role="alert">{{ err }} </div>
+          {% endfor %}
+        {% endif %}
+        
+        <div class="input-group">
+          <input class="form-control " type="email" name="email" placeholder="Your email..." />
+          <span class="input-group-btn">
+            <input type='submit' value='Join' class='btn btn-primary btn-lg'>
+          </span>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
 
 
-<form method="POST" action=""> {% csrf_token %}
-
-{{ form.as_p }}
-<input type='submit' value='Join' class='btn'>
-</form>
 </div>
 
 <div class='row' style='text-align:center; background-color:white; margin-top: 80px; min-height:200px;'>

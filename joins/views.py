@@ -69,7 +69,9 @@ def home(request):
 	except:
 		obj = None
 
+
 	form = JoinForm(request.POST or None)
+
 	if form.is_valid():
 			new_join = form.save(commit=False)
 	 		#we might do something here
@@ -92,6 +94,7 @@ def home(request):
 			return HttpResponseRedirect("/%s" % new_join_old.ref_id)
 
 			#new_join.save()
+	print form
 	context = {"form": form}
 	template = "home.html"
 
