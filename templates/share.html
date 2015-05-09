@@ -66,6 +66,14 @@ if ($signUpCount == 0){
 
 {% endblock %}
 
+{% block styles %}
+<style>
+	.featured-row{
+		border:none;
+	}
+</style>
+{% endblock %}
+
 {% block content %}
 {% include "navbar.html" %}
 
@@ -75,7 +83,7 @@ if ($signUpCount == 0){
       <div class="row">
         <div class="col-md-6 pull-right" style="text-align:center;">
         	<i class="fa fa-share-alt fa-5x"></i>
-          	<h1>Invite Friends &amp; Earn Rewards</h1><!--Daniel:  Seems the & and &amp; has the same effect on the website-->
+          	<h1>Invite Friends &amp; <br/> Earn Rewards</h1><!--Daniel:  Seems the & and &amp; has the same effect on the website-->
           	<p>Share your unique link below via Email, Facebook, Twitter, Reddit, or 
           	LinkedIn to earn rewards from xiaoxiezi.net</p>
           	<div class="well" style="background-color:white;">{{ ref_url }} </div>
@@ -185,6 +193,37 @@ Joined number is :{{ count }} <br/>
 		</span>
 
 	</div>
+</div>
+<hr/>		
+<div class='row featured-row'>
+  <!--<div class="container"> -->
+  <div class="col-sm-12">
+    <div class="col-sm-3">
+      <i class="fa fa-upload fa-3x"></i> 
+      <h2>Feature</h2>
+      <p class="lead">
+        Some feature text goes here.
+      </p>
+    </div>
+    <div class="col-sm-3">
+      <i class="fa fa-upload fa-3x"></i> 
+      <h2>Feature</h2>
+      <p class="lead">
+        Some feature text goes here.</p>
+    </div>
+    <div class="col-sm-3">
+      <i class="fa fa-upload fa-3x"></i> 
+      <h2>Feature</h2>
+      <p class="lead">
+        Some feature text goes here.</p>
+    </div>
+    <div class="col-sm-3">
+      <i class="fa fa-upload fa-3x"></i> 
+      <h2>Feature</h2>
+      <p class="lead">
+        Some feature text goes here.</p>
+    </div>
+  </div>
 </div>
 
 
