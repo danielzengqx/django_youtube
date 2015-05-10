@@ -1,3 +1,4 @@
+#-*- coding: utf-8 -*-
 # Create your views here.
 from django.conf	import settings 
 from django.shortcuts import render, HttpResponseRedirect, Http404
@@ -7,6 +8,8 @@ from .forms import EmailForm, JoinForm
 from .models import Join
 
 from django.http import HttpResponse
+from django.views.decorators.csrf import csrf_exempt
+from lxml import etree
 import hashlib
 
 def get_ip(request):
@@ -61,6 +64,7 @@ def home(request):
 	# 	if created:
 	# 			print "This obj was created"
 	#this is using model forms
+
 	try:
 		join_id = request.session['ref']
 		obj = Join.objects.get(id=join_id)
@@ -123,12 +127,47 @@ def checkSignature(request):
     else:
         return None
 
+def autoReply(request):
+	str_xml = web.data() #get post data 
+	xml = etree.fromstring(str_xml) #parse xml 
+   	content = xml.find("Content").text # get user input content
+	msgType = xml.find("MsgType").text
+	fromUser = xml.find("FromUserName").text
+	toUser = xml.find("ToUserName").text
+	return self.render.reply_text(fromUser,toUser,int(time.time()),u"I'm still in developing, what you typed are:"+content)
 
-
+@csrf_exempt
 def weixin(request):
-    if request.method == 'GET':
-        response = HttpResponse(checkSignature(request))
-        return response
-    else:
-        return HttpResponse('Hello World')
+	try:
+	    if request.method == 'GET':
+	    	print request
+	       	response = HttpResponse(checkSignature(request))
+	       	return response
+
+	    elif request.method ==  'POST':
+	    	print "daniel ,here is post!"
+	    	print request.body
+	    	str_xml = request.body #get post data 
+	    	xml = etree.fromstring(str_xml) #parse xml
+	    	print xml
+	    	content = xml.find("Content").text # get user input content
+	    	msgType = xml.find("MsgType").text
+	    	fromUser = xml.find("FromUserName").text
+	    	toUser = xml.find("ToUserName").text
+	    	#return self.render.reply_text(fromUser,toUser,int(time.time()),u"I'm still in developing, what you typed are:"+content)
+	    	#return autoReply(request)
+	    	response = "<xml>\
+	    				<ToUserName><![CDATA[" + fromUser +"]]></ToUserName>\
+						<FromUserName><![CDATA[" + toUser + "]]></FromUserName>\
+						<CreateTime>1431255793</CreateTime>\
+						<MsgType><![CDATA[text]]></MsgType>\
+						<Content><![CDATA[" + content + "]]></Content>\
+						</xml>"
+	    	return HttpResponse(response)
+	    else:
+	    	print "here is else %s" % request
+	        return HttpResponse('Hello World')
+
+	except Exception, error: #to print the error
+		print error
 
