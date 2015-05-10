@@ -150,19 +150,34 @@ def weixin(request):
 	    	str_xml = request.body #get post data 
 	    	xml = etree.fromstring(str_xml) #parse xml
 	    	print xml
-	    	content = xml.find("Content").text # get user input content
+
+
 	    	msgType = xml.find("MsgType").text
 	    	fromUser = xml.find("FromUserName").text
 	    	toUser = xml.find("ToUserName").text
 	    	#return self.render.reply_text(fromUser,toUser,int(time.time()),u"I'm still in developing, what you typed are:"+content)
 	    	#return autoReply(request)
-	    	response = "<xml>\
-	    				<ToUserName><![CDATA[" + fromUser +"]]></ToUserName>\
-						<FromUserName><![CDATA[" + toUser + "]]></FromUserName>\
-						<CreateTime>1431255793</CreateTime>\
-						<MsgType><![CDATA[text]]></MsgType>\
-						<Content><![CDATA[" + content + "]]></Content>\
-						</xml>"
+	    	if msgType == "event":
+	    		event = xml.find("Event").text
+	    		rawContent = "欢迎关注小鞋子\n其他功能正在开发中，目前只支持”陪聊“。\n回复任意文字/表情可查看效果>_<"
+	    		content = unicode(rawContent, "utf-8")
+		    	response = "<xml>\
+							<ToUserName><![CDATA[" + fromUser +"]]></ToUserName>\
+							<FromUserName><![CDATA[" + toUser + "]]></FromUserName>\
+							<CreateTime>1431255793</CreateTime>\
+							<MsgType><![CDATA[text]]></MsgType>\
+							<Content><![CDATA[" + content + "]]></Content>\
+							</xml>"
+
+	    	else:
+		    	content = xml.find("Content").text # get user input content
+		    	response = "<xml>\
+		    				<ToUserName><![CDATA[" + fromUser +"]]></ToUserName>\
+							<FromUserName><![CDATA[" + toUser + "]]></FromUserName>\
+							<CreateTime>1431255793</CreateTime>\
+							<MsgType><![CDATA[text]]></MsgType>\
+							<Content><![CDATA[" + content + "]]></Content>\
+							</xml>"
 	    	return HttpResponse(response)
 	    else:
 	    	print "here is else %s" % request
