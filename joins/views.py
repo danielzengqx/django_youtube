@@ -2,8 +2,12 @@
 from django.conf	import settings 
 from django.shortcuts import render, HttpResponseRedirect, Http404
 
+
 from .forms import EmailForm, JoinForm
 from .models import Join
+
+from django.http import HttpResponse
+import hashlib
 
 def get_ip(request):
 	try:
@@ -32,6 +36,7 @@ def get_ref_id():
 def share(request, ref_id):
 	#print ref_id
 	try:
+		print "here is ref_id : %s" % ref_id
 		join_obj = Join.objects.get(ref_id=ref_id)
 		friends_referred = Join.objects.filter(friend=join_obj)
 		count = join_obj.referral.all().count()
@@ -40,6 +45,7 @@ def share(request, ref_id):
 		template = "share.html"
 		return render(request,template, context)
 	except:
+		print "daniel here is wrong ref_id: %s" %ref_id
 		raise	Http404
 
 def home(request):
@@ -54,8 +60,6 @@ def home(request):
 	# 	print new_join.timestamp 
 	# 	if created:
 	# 			print "This obj was created"
-
-
 	#this is using model forms
 	try:
 		join_id = request.session['ref']
@@ -101,4 +105,30 @@ def home(request):
 
 	return render(request,template, context)
 
+
+def checkSignature(request):
+    signature = request.GET.get('signature',None)
+    timestamp = request.GET.get('timestamp',None)
+    nonce = request.GET.get('nonce',None)
+    echostr = request.GET.get('echostr',None)
+    
+    token = "danieltoken"
+
+    tmplist = [token,timestamp,nonce]
+    tmplist.sort()
+    tmpstr = "%s%s%s"%tuple(tmplist)
+    tmpstr = hashlib.sha1(tmpstr).hexdigest()
+    if tmpstr == signature:
+        return echostr
+    else:
+        return None
+
+
+
+def weixin(request):
+    if request.method == 'GET':
+        response = HttpResponse(checkSignature(request))
+        return response
+    else:
+        return HttpResponse('Hello World')
 

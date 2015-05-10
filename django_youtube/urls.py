@@ -10,10 +10,13 @@ urlpatterns = patterns('',
     # url(r'^$', 'django_youtube.views.home', name='home'),
     # url(r'^blog/', include('blog.urls')),
 
- 	url(r'^admin/', include(admin.site.urls)),
+ 	url(r'^admin', include(admin.site.urls)),
     url(r'^$', 'joins.views.home', name='home'),
-    # url(r'^testhome', 'django_youtube.views.testhome', name='testhome'),
-    url(r'^(?P<ref_id>.*)$', 'joins.views.share', name='home'),
+	url(r'^weixin$', 'joins.views.weixin', name='weixin'),
+	# "." means match any character , so anyother url should puth before this to match specific view#
+    url(r'^(?P<ref_id>.*)$', 'joins.views.share', name='share'), 
+
+
 
 )
 
