@@ -174,12 +174,12 @@ def weixin(request):
 		    	if content == "1":
 		    		vl_title1 = "厦门之行—-标题1"
 		    		vl_description1 = "厦门之行1"
-		    		pic_url1 = "http://b87.photo.store.qq.com/psb?/V117jtH91i6nzd/*iBbJ98RLScbg*EF4QwUsi3rYA1zWHBJYq*hw6qM3a4!/b/dODm6DPGfAAA&bo=ngK*AQAAAAABAAU!&rf=viewer_4&t=5"
+		    		vl_pic_url1 = "http://b87.photo.store.qq.com/psb?/V117jtH91i6nzd/*iBbJ98RLScbg*EF4QwUsi3rYA1zWHBJYq*hw6qM3a4!/b/dODm6DPGfAAA&bo=ngK*AQAAAAABAAU!&rf=viewer_4&t=5"
                                 vl_url1 = "http://117.78.5.184"	
 
 		    		vl_title = "厦门之行—-标题"
 		    		vl_description = "厦门之行"
-		    		pic_url = "http://b88.photo.store.qq.com/psb?/V117jtH91i6nzd/a2xngiBE0QvjwOHbXEi4kltiOhcn59l1Qm9pgpuR*pA!/b/dLpIdTT5SAAA&bo=ngK.AQAAAAABAAQ!&rf=viewer_4&t=5"
+		    		vl_pic_url = "http://b88.photo.store.qq.com/psb?/V117jtH91i6nzd/a2xngiBE0QvjwOHbXEi4kltiOhcn59l1Qm9pgpuR*pA!/b/dLpIdTT5SAAA&bo=ngK.AQAAAAABAAQ!&rf=viewer_4&t=5"
                                 vl_url = "http://117.78.5.184/weixin"										
                                 
                                 response = "<xml>\
@@ -192,14 +192,14 @@ def weixin(request):
                                 <item>\
                                 <Title><![CDATA[" + vl_title1 + "]]></Title> \
                                 <Description><![CDATA[" + vl_description1 + "]]></Description>\
-                                <PicUrl><![CDATA[" + pic_url1 + "]]></PicUrl>\
+                                <PicUrl><![CDATA[" + vl_pic_url1 + "]]></PicUrl>\
                                 <Url><![CDATA[" + vl_url1 + "]]></Url>\
                                 </item>\
                                 <item>\
                                 <Title><![CDATA[" + vl_title + "]]></Title>\
                                 <Description><![CDATA[" + vl_description + "]]></Description>\
-                                <PicUrl><![" + pic_url + "]]></PicUrl>\
-                                <Url><![CDATA[" + url + "]]></Url>\
+                                <PicUrl><![" + vl_pic_url + "]]></PicUrl>\
+                                <Url><![CDATA[" + vl_url + "]]></Url>\
                                 </item>\
                                 </Articles>\
                                 </xml>"
