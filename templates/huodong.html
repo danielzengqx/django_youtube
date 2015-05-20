@@ -23,10 +23,12 @@
       <div class='container' >
       <div class="col-sm-6 col-sm-offset-3" > <!-- Move columns to the right using .col-md-offset-* classes. -->
         <h1>发布活动</h1>
-        <form>
+
+        <form method="post" action="/huodong/preview/">
+          {% csrf_token %}
           <div class="form-group">
           <label for="exampleInputEmail1">活动类型</label>
-          <select class="form-control">
+          <select class="form-control" name="huodong_type">
             <option>运动</option>
             <option>聚会</option>
             <option>讲座</option>
@@ -35,18 +37,43 @@
           </div>
           <div class="form-group">
             <label for="exampleInputEmail1">活动标题</label>
-            <input type="text" class="form-control" id="exampleInputEmail1" placeholder="标题">
+            <input type="text" name= "title" class="form-control" id="exampleInputEmail1" placeholder="标题">
           </div>
 
           <div class="form-group">
             <label for="exampleInputPassword1">活动费用</label>
-            <input type="text" class="form-control" id="exampleInputPassword1" placeholder="费用">
+            <input type="text" name="fee" class="form-control" id="exampleInputPassword1" placeholder="费用">
           </div>
 
           <div class="form-group">
             <label for="exampleInputPassword1">活动地点</label>
-            <input type="text" class="form-control" id="exampleInputPassword1" placeholder="费用">
+            <input type="text" name="location" class="form-control" id="exampleInputPassword1" placeholder="时间">
           </div>
+
+          <div class="form-group">
+            <label for="exampleInputPassword1">活动时间</label>
+            <input type="text" name="time" class="form-control" id="exampleInputPassword1" placeholder="地点">
+          </div>
+<!--           <div class="container">
+              <div class="row">
+                  <div class='col-sm-6'>
+                      <div class="form-group">
+                          <div class='input-group date' id='datetimepicker1'>
+                              <input type='text' class="form-control" />
+                              <span class="input-group-addon">
+                                  <span class="glyphicon glyphicon-calendar"></span>
+                              </span>
+                          </div>
+                      </div>
+                  </div>
+                  <script type="text/javascript">
+                      $(function () {
+                          $('#datetimepicker1').datetimepicker();
+                      });
+                  </script>
+              </div>
+          </div> -->
+
 
         <div class="panel panel-primary">
           <div class="panel-heading">参与者信息：</div>
@@ -121,8 +148,20 @@
             </label>
           </div>
           -->
-          <button type="submit" class="btn btn-default">Submit</button>
+          <button type="submit" class="btn btn-default">预览</button>
         </form>
+
+<!-- <ul class="list-group">
+  <span class="label label-primary" style="display:inline-block">Primary</span><li class="list-group-item">Cras justo odio</li>
+  <span class="label label-primary">Primary</span><li class="list-group-item">Dapibus ac facilisis in</li>
+  <span class="label label-primary">Primary</span><li class="list-group-item">Morbi leo risus</li>
+  <span class="label label-primary">Primary</span><li class="list-group-item">Porta ac consectetur ac</li>
+  <span class="label label-primary">Primary</span><li class="list-group-item">Vestibulum at eros</li>
+</ul> -->
+
+
+        <button type="submit" class="btn btn-default">已有活动</button>
+
       </div>
     </div>
 
