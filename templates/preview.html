@@ -1,4 +1,6 @@
 <!DOCTYPE html>
+
+
 {% load staticfiles %}
 <html lang="en">
   <head>
@@ -19,50 +21,84 @@
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
   </head>
+
+  <style type="text/css">
+  .input-group{
+      width: 100%;
+  }
+
+  .input-group-addon{
+      width: 25%;
+      text-align: center; 
+/*      background-color: #337ab7;
+      background-border: #337ab7;*/
+      background-color: #5bc0de;
+      background-border: #5bc0de;
+      color: #fff;
+      border-radius: 5px;
+  }
+  .form-control {
+      width: 75%; 
+  }
+ 
+
+  th {
+    background-color: #5bc0de;
+    width: 25%;
+    color:#fff;
+    text-align: center;
+  }
+
+</style>
+
   <body>
       <div class='container' >
       <div class="col-sm-6 col-sm-offset-3" > <!-- Move columns to the right using .col-md-offset-* classes. -->
-        <h1>活动预览</h1>
 
-        <table class="table table-bordered">
-          <thead>
-            <tr>
+        <div class="panel panel-success" style="text-align:center; margin-top:15px;">
+          <!-- <div class="panel-heading">活动概况</div> -->
+            <table class="table">
+  <!--             <thead>
+                <tr>
+                  活动概况  
+                </tr>
+              </thead>
+   -->            <tbody>
+                <tr>
+                  <th scope="row">活动</th>
+                  <td>{{ title }}</td>
+                </tr>
+                <tr>
+                  <th scope="row">费用</th>
+                  <td>{{ fee }}</td>
+                </tr>
+                <tr>
+                  <th scope="row">地点</th>
+                  <td>{{ location }}</td>
+                </tr>
+                <tr>
+                  <th scope="row">时间</th>
+                  <td>{{ time }}</td>
+                </tr>        
+              </tbody>
+            </table>
+        </div>  
 
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <th scope="row">活动</th>
-              <td>{{ title }}</td>
-            </tr>
-            <tr>
-              <th scope="row">费用</th>
-              <td>{{ fee }}</td>
-            </tr>
-            <tr>
-              <th scope="row">地点</th>
-              <td>{{ location }}</td>
-            </tr>
-            <tr>
-              <th scope="row">时间</th>
-              <td>{{ time }}</td>
-            </tr>        
-          </tbody>
-        </table>
+        
+        {% for question in questions_preview %}
+        <div class="input-group">
+          <span class="input-group-addon primary" id="sizing-addon1">{{ question }} </span>
+          <input type="text" class="form-control" placeholder={{ question }} aria-describedby="sizing-addon1">
+        </div>
+        <br/>
+        {% endfor %}
 
-
-        <ul class="list-group">
-          <span class="label label-primary" style="display:inline-block">活动</span><li class="list-group-item">{{ title }}</li><br>
-          <span class="label label-primary" style="display:inline-block">费用</span><li class="list-group-item">{{ fee }}</li>
-          <br>
-          <span class="label label-primary" style="display:inline-block">地点</span><li class="list-group-item">{{ location }}</li>
-          <br>
-          <span class="label label-primary">时间</span><li class="list-group-item">{{ time }}</li>
-          <br>
-        </ul>
+        <a type="button" class="btn btn-primary btn-lg btn-block" href="http://127.0.0.1:8000/huodong/submit">发布</a>
+        <a type="button" class="btn btn-default btn-lg btn-block" href="http://117.78.5.184/huodong/">返回</a>
 
       </div>
     </div>
+
 
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->

@@ -19,7 +19,7 @@ urlpatterns = patterns('',
 	# url(r'^huodong/preview$', 'huodong.views.preview', name='preview'),	
 
 	# "." means match any character , so anyother url should puth before this to match specific view#
-    #url(r'^(?P<ref_id>.*)$', 'joins.views.share', name='share'), 
+    url(r'^(?P<ref_id>.*)$', 'joins.views.share', name='share'), 
 
 
 
