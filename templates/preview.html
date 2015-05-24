@@ -94,7 +94,13 @@
         {% endfor %}
 
         <a type="button" class="btn btn-primary btn-lg btn-block" href="http://127.0.0.1:8000/huodong/submit">发布</a>
-        <a type="button" class="btn btn-default btn-lg btn-block" href="http://117.78.5.184/huodong/">返回</a>
+        <button type="button" class="btn btn-default btn-lg btn-block" onclick="goBack()">返回</button>
+
+        <script>
+            function goBack() {
+                window.history.go(-1);
+            }
+        </script>
 
       </div>
     </div>

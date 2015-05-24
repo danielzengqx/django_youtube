@@ -159,7 +159,7 @@ def weixin(request):
 	    	#return autoReply(request)
 	    	if msgType == "event":
 	    		event = xml.find("Event").text
-	    		rawContent = "欢迎关注小鞋子\n其他功能正在开发中，目前只支持”陪聊“。\n回复任意文字/表情可查看效果>_<"
+	    		rawContent = "欢迎关注AA活动助手\n发送数字“1”，可发布活动。\n回复其他任意文字/数字，将“陪聊”。>_<"
 	    		content = unicode(rawContent, "utf-8")
 		    	response = "<xml>\
 							<ToUserName><![CDATA[" + fromUser +"]]></ToUserName>\
@@ -175,12 +175,12 @@ def weixin(request):
 		    		vl_title1 = "AA活动助手"
 		    		vl_description1 = "AA活动助手"
 		    		vl_pic_url1 = "http://b87.photo.store.qq.com/psb?/V117jtH91i6nzd/*iBbJ98RLScbg*EF4QwUsi3rYA1zWHBJYq*hw6qM3a4!/b/dODm6DPGfAAA&bo=ngK*AQAAAAABAAU!&rf=viewer_4&t=5"
-                                vl_url1 = "http://117.78.5.184/huodong"	
+                                vl_url1 = "http://117.78.5.184/huodong/"	
 
-		    		vl_title = "创建活动"
-		    		vl_description = "创建活动"
+		    		vl_title = "发布活动"
+		    		vl_description = "发布活动"
 		    		vl_pic_url = "http://b88.photo.store.qq.com/psb?/V117jtH91i6nzd/a2xngiBE0QvjwOHbXEi4kltiOhcn59l1Qm9pgpuR*pA!/b/dLpIdTT5SAAA&bo=ngK.AQAAAAABAAQ!&rf=viewer_4&t=5"
-                                vl_url = "http://117.78.5.184/huodong"										
+                                vl_url = "http://117.78.5.184/huodong/"										
                                 
                                 response = "<xml>\
                                 <ToUserName><![CDATA[" + fromUser + "]]></ToUserName>\
