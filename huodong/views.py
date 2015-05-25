@@ -38,20 +38,13 @@ def preview(request):
 			print key + ":" + value
 
 		if request.POST.iteritems():
-			huodong_type = request.POST["huodong_type"]
-			huodong = Huodong(huodong_type=huodong_type)
-			huodong.title = request.POST["title"]
-			huodong.fee = request.POST["fee"]
-			huodong.time = request.POST["time"]
-			huodong.location = request.POST["location"]
+			Type = request.POST["huodong_type"]
+			Title = request.POST["title"]
+			Fee = request.POST["fee"]
+			Time = request.POST["time"]
+			Location = request.POST["location"]
 
-			huodong.save()
-
-		print Huodong.objects
-
-
-
-		questions = request.POST.getlist("question")	
+		questions = request.POST.getlist("question")
 		if questions:
 			questions_preview = []
 			for question in questions:
@@ -62,16 +55,45 @@ def preview(request):
 
 	template = "preview.html"
 	context = {
-		"type" : huodong_type,
-		"title" : huodong.title,
-		"fee" : huodong.fee,
-		"location" : huodong.location,
-		"time" : huodong.time,
+		"type" : Type,
+		"title" : Title,
+		"fee" : Fee,
+		"location" : Location,
+		"time" : Time,
 		"questions_preview":questions_preview
 	}
 	return render(request, template, context)
 
 
+def release(request):
+#	if request.method == 'POST':
+	print "here is request %s: " % request
+#		for key, value in request.POST.iteritems():
+#			print key + ":" + value
+	# huodong_type = request.POST["huodong_type"]
+	# huodong = Huodong(Type=huodong_type)
+	#huodong.huodong_id = get_ref_id()
+	# print "daniel huodong id %s : " % huodong.huodong_id
+	# huodong.title = request.POST["title"]
+	# huodong.fee = request.POST["fee"]
+	# huodong.time = request.POST["time"]
+	# huodong.location = request.POST["location"]
+
+	# huodong.save()
+
+	# print Huodong.objects
+
+	# template = "release.html"
+	# context = {
+	# 	"type" : Type,
+	# 	"title" : Title,
+	# 	"fee" : Fee,
+	# 	"location" : Location,
+	# 	"time" : Time,
+	# 	"questions_preview":questions_preview
+	# }
+	# return render(request, template, context)
+	return HttpResponse("Here is your huodong id: " + str(get_ref_id()))
 
 def submit(request):
 
