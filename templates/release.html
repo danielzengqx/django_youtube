@@ -8,7 +8,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>活动预览</title>
+    <title>活动报名</title>
 
     <!-- Bootstrap -->
     <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
@@ -93,14 +93,8 @@
         <br/>
         {% endfor %}
 
-        <a type="button" class="btn btn-primary btn-lg btn-block" href="{% url 'huodong:release' %}">发布</a>
-        <button type="button" class="btn btn-default btn-lg btn-block" onclick="goBack()">返回</button>
+        <a type="button" class="btn btn-primary btn-lg btn-block" href="http://127.0.0.1:8000/huodong/submit">提交</a>
 
-        <script>
-            function goBack() {
-                window.history.go(-1);
-            }
-        </script>
 
       </div>
     </div>
