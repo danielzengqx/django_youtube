@@ -13,14 +13,16 @@ urlpatterns = patterns('',
  	url(r'^admin', include(admin.site.urls)),
     url(r'^$', 'joins.views.home', name='home'),
 	url(r'^weixin$', 'joins.views.weixin', name='weixin'),
+	#In Python regular expressions, the syntax for named regular-expression groups is (?P<name>pattern), \
+	#where name is the name of the group and pattern is some pattern to matchself.
 	url(r'^(?P<ref_id>\w{10})$', 'joins.views.share', name='share'),   	
 	url(r'^huodong/',include('huodong.urls',namespace="huodong")),
 
 	# url(r'^huodong$', 'huodong.views.home', name='home'),	
 	# url(r'^huodong/preview$', 'huodong.views.preview', name='preview'),	
 
-	# "." means match any character , so anyother url should puth before this to match specific view#
-	#In Python regular expressions, the syntax for named regular-expression groups is (?P<name>pattern), where name is the name of the group and pattern is some pattern to match.
+	
+
 
 
 

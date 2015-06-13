@@ -64,11 +64,13 @@
                 </tr>
               </thead>
    -->            <tbody>
+                {% for k, v in notices.items %}
                 <tr>
-                  <th scope="row">活动</th>
-                  <td>{{ title }}</td>
+                  <th scope="row">{{ k }}</th>
+                  <td>{{ v }}</td>
                 </tr>
-                <tr>
+                {% endfor %}
+<!--                 <tr>
                   <th scope="row">费用</th>
                   <td>{{ fee }}</td>
                 </tr>
@@ -79,13 +81,13 @@
                 <tr>
                   <th scope="row">时间</th>
                   <td>{{ time }}</td>
-                </tr>        
+                </tr>  -->       
               </tbody>
             </table>
         </div>  
 
         
-        {% for question in questions_preview %}
+        {% for question in questions %}
         <div class="input-group">
           <span class="input-group-addon primary" id="sizing-addon1">{{ question }} </span>
           <input type="text" class="form-control" placeholder={{ question }} aria-describedby="sizing-addon1">
@@ -93,7 +95,7 @@
         <br/>
         {% endfor %}
 
-        <a type="button" class="btn btn-primary btn-lg btn-block" href="http://127.0.0.1:8000/huodong/submit">提交</a>
+        <!-- <a type="button" class="btn btn-primary btn-lg btn-block" href="http://127.0.0.1:8000/huodong/submit">提交</a> -->
 
 
       </div>
