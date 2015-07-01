@@ -14,7 +14,7 @@ class  Huodong(Document):
 	# # time = DateTimeField(required=True)
 	# time = StringField(max_length=500, required=True)
 	# location = StringField(max_length=500, required=True)
-	huodong_id	= StringField(max_length=120, unique=True)
-	all_content = StringField(max_length=120, unique=True)
+	huodong_id	= StringField(max_length=10)
+	all_content = DictField()
 	def __unicode__(self):
-		return "%s" % (self.title)
+		return "%s" % (self.huodong_id)

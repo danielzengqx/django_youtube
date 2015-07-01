@@ -7,7 +7,8 @@ urlpatterns = patterns('',
     url(r'^preview/$',  views.preview, name='preview'),
     #url(r'^(release/?P<huodong_id>\w{10})$',  views.release, name='release'),
     url(r'^release/(?P<huodong_id>\w{10})$',  views.release, name='release'),
-
-    #url(r'^(?P<ref_id>.*)$', 'views.huodong', name='huodong'), 
+    url(r'^success/$',  views.success, name='success'),
+    url(r'^release/.*$',  views.join, name='join'),
+    # url(r'^(?P<ref_id>.*)$', 'views.huodong', name='huodong'), 
 
 	)
