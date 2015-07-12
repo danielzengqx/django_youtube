@@ -10,7 +10,12 @@ class ReferMiddleware():
 		# 	ref_id = False
 		ref_id = request.GET.get("ref", "") #request.GET.:A dictionary-like object containing all given HTTP GET parameters, 
 											#And .get is a formal function to get the value with the key
-		#print ref_id
+		try:
+			request.session['join_id'] = request.META.get("HTTP_REFERER").split("=")[1]
+		except :
+			pass
+			
+		# print "ref_id is %s " % ref_id
 		try:
 			obj = Join.objects.get(ref_id = ref_id)
 			# print obj
@@ -22,6 +27,9 @@ class ReferMiddleware():
 		else:
 			request.session['ref'] = ref_id
 
+
+
+		# print "huodong_num is %s " % huodong_num
 
 
 		

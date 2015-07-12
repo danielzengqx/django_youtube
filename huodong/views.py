@@ -3,7 +3,7 @@
 from django.conf import settings 
 from django.shortcuts import render, HttpResponseRedirect
 from django.http import HttpResponse
-from models import Huodong
+from models import Huodong, Info
 import sys
 from django.core.cache import cache
 from collections import OrderedDict
@@ -23,8 +23,8 @@ def home(request):
 	response = "Welcome to huodong!"
 	template = "huodong.html"
 	context = {}
-	for obj in  Huodong.objects.all():
-		print "content: %s" % obj["all_content"]
+	# for obj in  Huodong.objects.all():
+	# 	print "content: %s" % obj["all_content"]
 
 
 
@@ -50,8 +50,8 @@ def preview(request):
 						'sex': '性别'}
 
 	if request.method == 'POST':
-		for key, value in request.POST.iteritems():
-			print key + ":" + value
+		# for key, value in request.POST.iteritems():
+		# 	print key + ":" + value
 
 		if request.POST.iteritems():
 			Type = request.POST["huodong_type"]
@@ -85,11 +85,11 @@ def preview(request):
 	cache.set(huodong_id, all_content, timeout=60)
 	a = cache.get(huodong_id)
 	
-	for key in  a['notice'].keys():
-			print key
+	# for key in  a['notice'].keys():
+	# 		print key
 
-	for value in  a['notice'].values():
-			print value
+	# for value in  a['notice'].values():
+	# 		print value
 
 	print "here is cache %s " % cache.get(huodong_id)	
 
@@ -100,7 +100,6 @@ def join(request):
 	# try:
 	huodong_id = request.session['ref']
 	huodong = Huodong.objects.get(huodong_id=huodong_id)
-	print huodong
 	# print "huodong id is %s\n" % huodong_id
 	# print "the obj is %s" % (obj.all_content)
 		# print "friends recommended by %s are as followed:" % obj
@@ -166,7 +165,7 @@ def join(request):
 def release(request, huodong_id):
 	all_content = cache.get(huodong_id)
 #	if request.method == 'POST':
-	print "here is all content %s: " % all_content
+	# print "here is all content %s: " % all_content
 #		for key, value in request.POST.iteritems():
 #			print key + ":" + value
 	# huodong_type = request.POST["huodong_type"]
@@ -211,5 +210,65 @@ def submit(request):
 	return HttpResponse("here is your url to share: " + huodong_url )
 
 
-def success(requeste):
+def success(request):
+	all_q_a = {}
+	# print request
+	if request.session['join_id']:
+		join_id = request.session['join_id']
+	# 	print "join id is %s \n" % request.session['join_id']
+	# else:
+	# 	print "no join id\n"
+
+	if request.method == "POST":
+		# print request.POST
+		q_a = dict(request.POST.iteritems())   #.iteritems() returns a generator object so q_a is a generator.Generator will generate values only once. After that it will be empty
+		del q_a[u'csrfmiddlewaretoken']
+	try:
+		info = Info.objects.get(join_id=join_id)
+		print "hre is origin q_a: %s" % info.q_a 
+		info.q_a.extend([q_a])
+		info.save()
+
+	except:
+		info = Info(join_id)
+		info.q_a = [q_a]
+		info.save()
+
+
+
+
+	info = Info.objects.get(join_id=join_id)
+	for q in info.q_a:
+		for k, v in q.items():
+			print k, v
+
+
+	# except:
+	# 	info_save = Info.objects.get(join_id=join_id)
+
+	# 	print info_save
+
+	# for q_a in info_save.q_a:
+	# 	print q_a
+
 	return	HttpResponse("提交成功！")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

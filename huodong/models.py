@@ -18,3 +18,10 @@ class  Huodong(Document):
 	all_content = DictField()
 	def __unicode__(self):
 		return "%s" % (self.huodong_id)
+
+
+class Info(Document):
+	join_id = StringField(max_length=10)
+	q_a = ListField()
+	def __unicode__(self):
+		return "%s" % (self.join_id)

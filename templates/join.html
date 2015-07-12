@@ -85,21 +85,19 @@
         </div>  
 
         
-        {% for question in questions_preview %}
-        <div class="input-group">
-          <span class="input-group-addon primary" id="sizing-addon1">{{ question }} </span>
-          <input type="text" class="form-control" placeholder={{ question }} aria-describedby="sizing-addon1">
-        </div>
-        <br/>
-        {% endfor %}
-        <a type="button" class="btn btn-primary btn-lg btn-block" href="/huodong/success">提交</a>
-<!--         <button type="button" class="btn btn-default btn-lg btn-block" onclick="goBack()">返回</button>
- -->
-        <script>
-            function goBack() {
-                window.history.go(-1);
-            }
-        </script>
+        <form method="post" action="/huodong/success/">
+          {% csrf_token %}
+          {% for question in questions_preview %}
+          <div class="input-group">
+            <span class="input-group-addon primary" id="sizing-addon1">{{ question }} </span>
+            <input type="text" name= {{ question }} class="form-control" placeholder={{ question }} aria-describedby="sizing-addon1">
+            <!-- <input type="text" name="fee" class="form-control" id="exampleInputPassword1" placeholder="费用"> -->
+
+          </div>
+          <br/>
+          {% endfor %}
+          <button type="submit" class="btn btn-primary btn-lg btn-block">提交</button>
+        </form>
 
       </div>
     </div>
