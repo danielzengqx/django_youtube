@@ -159,7 +159,7 @@ def weixin(request):
 	    	#return autoReply(request)
 	    	if msgType == "event":
 	    		event = xml.find("Event").text
-	    		rawContent = "欢迎关注AA活动助手\n发送数字“1”，可发布活动。\n回复其他任意文字/数字，将“陪聊”。>_<"
+	    		rawContent = "你好，欢迎关注AA活动助手\n发送数字“1”，可发布活动。\n回复其他任意文字/数字，将“陪聊”。>_<"
 	    		content = unicode(rawContent, "utf-8")
 		    	response = "<xml>\
 							<ToUserName><![CDATA[" + fromUser +"]]></ToUserName>\
