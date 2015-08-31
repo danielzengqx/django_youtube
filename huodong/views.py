@@ -43,8 +43,8 @@ def preview(request):
 
 	question_table = {\
 						'user_name': '姓名',\
-						'phone_num': '手机号码',\
-						'wechat_num': '微信号',\
+						'phone_num': '手机',\
+						'wechat_num': '微信',\
 						'academy': '学院',\
 						'major': '专业',\
 						'sex': '性别'}
@@ -237,10 +237,15 @@ def success(request):
 
 
 
-	info = Info.objects.get(join_id=join_id)
-	for q in info.q_a:
-		for k, v in q.items():
-			print k, v
+	# info = Info.objects.get(join_id=join_id)
+	# for k, v in q_a.items():
+	# 	print k, v
+
+	with open("join_report.txt", "a") as f:
+		f.writelines(50 * "*" + "\n")
+		for k, v in q_a.items():
+			f.writelines(k +  (30 - len(k)) * " " + ":     " + v + "\n")
+
 
 
 	# except:
