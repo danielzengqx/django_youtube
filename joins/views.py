@@ -206,12 +206,44 @@ def weixin(request):
                                 </xml>"
 		    	else:
 		    		#自动回复功能
-			    	response = "<xml>\
-                                <ToUserName><![CDATA[" + fromUser +"]]></ToUserName>\
+			    	# response = "<xml>\
+        #                         <ToUserName><![CDATA[" + fromUser +"]]></ToUserName>\
+        #                         <FromUserName><![CDATA[" + toUser + "]]></FromUserName>\
+        #                         <CreateTime>1431255793</CreateTime>\
+        #                         <MsgType><![CDATA[text]]></MsgType>\
+        #                         <Content><![CDATA[" + content + "]]></Content>\
+        #                         </xml>"
+        			#qr feature
+        			vl_title1 = "AA活动助手"
+		    		vl_description1 = "AA活动助手"
+		    		vl_pic_url1 = "http://b87.photo.store.qq.com/psb?/V117jtH91i6nzd/*iBbJ98RLScbg*EF4QwUsi3rYA1zWHBJYq*hw6qM3a4!/b/dODm6DPGfAAA&bo=ngK*AQAAAAABAAU!&rf=viewer_4&t=5"
+                                vl_url1 = "http://120.25.163.62/huodong/"	
+
+		    		vl_title = "发布活动"
+		    		vl_description = "发布活动"
+		    		vl_pic_url = "http://b88.photo.store.qq.com/psb?/V117jtH91i6nzd/a2xngiBE0QvjwOHbXEi4kltiOhcn59l1Qm9pgpuR*pA!/b/dLpIdTT5SAAA&bo=ngK.AQAAAAABAAQ!&rf=viewer_4&t=5"
+                                vl_url = "http://120.25.163.62/huodong/"										
+                                
+                                response = "<xml>\
+                                <ToUserName><![CDATA[" + fromUser + "]]></ToUserName>\
                                 <FromUserName><![CDATA[" + toUser + "]]></FromUserName>\
-                                <CreateTime>1431255793</CreateTime>\
-                                <MsgType><![CDATA[text]]></MsgType>\
-                                <Content><![CDATA[" + content + "]]></Content>\
+                                <CreateTime>12345678</CreateTime>\
+                                <MsgType><![CDATA[news]]></MsgType>\
+                                <ArticleCount>2</ArticleCount>\
+                                <Articles>\
+                                <item>\
+                                <Title><![CDATA[" + vl_title1 + "]]></Title> \
+                                <Description><![CDATA[" + vl_description1 + "]]></Description>\
+                                <PicUrl><![CDATA[" + vl_pic_url1 + "]]></PicUrl>\
+                                <Url><![CDATA[" + vl_url1 + "]]></Url>\
+                                </item>\
+                                <item>\
+                                <Title><![CDATA[" + vl_title + "]]></Title>\
+                                <Description><![CDATA[" + vl_description + "]]></Description>\
+                                <PicUrl><![" + vl_pic_url + "]]></PicUrl>\
+                                <Url><![CDATA[" + vl_url + "]]></Url>\
+                                </item>\
+                                </Articles>\
                                 </xml>"
 
 
