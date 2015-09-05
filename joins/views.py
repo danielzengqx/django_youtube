@@ -214,15 +214,15 @@ def weixin(request):
         #                         <Content><![CDATA[" + content + "]]></Content>\
         #                         </xml>"
         			#qr feature
-        			vl_title1 = "AA活动助手"
-		    		vl_description1 = "AA活动助手"
+        			vl_title1 = "二维码"
+		    		vl_description1 = "二维码"
 		    		vl_pic_url1 = "http://b87.photo.store.qq.com/psb?/V117jtH91i6nzd/*iBbJ98RLScbg*EF4QwUsi3rYA1zWHBJYq*hw6qM3a4!/b/dODm6DPGfAAA&bo=ngK*AQAAAAABAAU!&rf=viewer_4&t=5"
-                                vl_url1 = "http://120.25.163.62/huodong/"	
+                                vl_url1 = "http://120.25.163.62/huodong/qr/?qr_id=" + 	fromUser +'&words=' + content						
 
-		    		vl_title = "发布活动"
-		    		vl_description = "发布活动"
+		    		vl_title = "二维码"
+		    		vl_description = "二维码"
 		    		vl_pic_url = "http://b88.photo.store.qq.com/psb?/V117jtH91i6nzd/a2xngiBE0QvjwOHbXEi4kltiOhcn59l1Qm9pgpuR*pA!/b/dLpIdTT5SAAA&bo=ngK.AQAAAAABAAQ!&rf=viewer_4&t=5"
-                                vl_url = "http://120.25.163.62/huodong/"										
+                                vl_url = "http://120.25.163.62/huodong/qr/?qr_id=" + fromUser +'&words=' + content						
                                 
                                 response = "<xml>\
                                 <ToUserName><![CDATA[" + fromUser + "]]></ToUserName>\

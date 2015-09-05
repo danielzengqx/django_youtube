@@ -302,8 +302,10 @@ def gen_qr(url, path):
 
 def qr(request):
 	qr_id = request.session['qr']
-	words = 'Welcome to my world!!'
-
+	words = request.session['words']
+	print "daniel, here is words: %s" % words
+	# words = 'Welcome to my world!!'
+	qr_path = settings.STATICFILES_DIRS[0] +'/img/' +str(qr_id) +'.png'
 	# print "daniel, here is qr: %s" % qr_path
 	gen_qr(words, qr_path)
 
@@ -313,7 +315,6 @@ def qr(request):
 	context = {
 		'qr_id': str(qr_id)
 	}
-	print "daniel, huodong_id: " + str(qr_id)
 	return render(request, template, context)
 	#return HttpResponse("Here is your cache: %s" %  unicode(cache.get(huodong_id)))
 

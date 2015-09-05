@@ -11,7 +11,7 @@ class ReferMiddleware():
 		ref_id = request.GET.get("ref", "") #request.GET.:A dictionary-like object containing all given HTTP GET parameters, 
 											#And .get is a formal function to get the value with the key
 		request.session['qr'] = request.GET.get("qr_id", "") 
-
+		request.session['words'] = request.GET.get("words", "") 
 		try:
 			request.session['join_id'] = request.META.get("HTTP_REFERER").split("=")[1]
 		except :

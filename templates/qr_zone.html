@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+
+{% block jquery %}
+
+$signUpCount = {{ count }};
+//$(".progress-bar").css("width", "80%").attr("aria-valuenow", "80").text("80%");
+
+function completeBlock(progressBarId){
+	$(progressBarId).css("width", "100%").attr("aria-valuenow", 100).text("Completed");
+}
+
+function setNewPerc(progressBarId, percentNum, newText){
+	$(progressBarId).css("width", percentNum + "%").attr("aria-valuenow", percentNum)
+
+	if (percentNum	< 20){
+		$(progressBarId).text("...");
+	} else if (percentNum >= 20 && percentNum < 40){
+		$(progressBarId).text("Almost...");
+	} else {
+		$(progressBarId).text(newText);
+	}
+
+}
+
+
+if ($signUpCount == 0){
+	
+} else if($signUpCount > 0 && $signUpCount < 5){
+	$newPercent = $signUpCount/5 * 100;
+	setNewPerc("#count5", $newPercent, "Friends Num: " + $signUpCount);
+
+} else if ($signUpCount >= 5 && $signUpCount < 15){
+	$newCount = $signUpCount - 5;
+	$newPercent = $newCount/10 * 100;
+	completeBlock("#count5");
+	setNewPerc("#count15", $newPercent, "Friends Num: " + $signUpCount)
+
+} else if ($signUpCount >= 15 && $signUpCount < 25){
+	completeBlock("#count5");
+	completeBlock("#count15");
+	$newCount = $signUpCount - 15;
+	$newPercent = $newCount/(25-15) * 100;
+
+	setNewPerc("#count25", $newPercent, "Friends Num: " + $signUpCount)
+
+} else if ($signUpCount >= 25 && $signUpCount < 50){
+	completeBlock("#count5");
+	completeBlock("#count15");
+	completeBlock("#count25");
+	$newCount = $signUpCount - 25;
+	$newPercent = $newCount/(50-25) * 100;
+
+	setNewPerc("#count50", $newPercent, "Friends Num: " + $signUpCount)
+
+} else {
+	completeBlock("#count5");
+	completeBlock("#count15");
+	completeBlock("#count25");
+	completeBlock("#count50");
+
+}
+
+
+
+{% endblock %}
+
+{% block styles %}
+<style>
+	.featured-row{
+		border:none;
+	}
+	body{
+		background-color: #eee;
+
+	}
+</style>
+{% endblock %}
+
+{% block content %}
+{% include "navbar.html" %}
+
+    <!-- Main jumbotron for a primary marketing message or call to action -->
+    <div class="jumbotron">
+      <div class="container">
+      <div class="row">
+        <div class="col-md-6 pull-center">
+        	<i class="fa fa-share-alt fa-5x"></i>
+          	<p>欢迎使用二维码助手</p>
+          <img src="/main-static/img/{{ qr_id }}.png" class='img-responsive img-rounded' />
+        </div>
+
+       </div>
+      </div>
+    </div>
+
+{% endblock %}
+
