@@ -175,6 +175,14 @@ def release(request, huodong_id):
 	# huodong.fee = request.POST["fee"]
 	# huodong.time = request.POST["time"]
 	# huodong.location = request.POST["location"]
+	try:
+		if request.GET['from'] == u'singlemessage':
+				new_url = settings.SHARE_URL + request.path.split('/')[-1]
+				print request.GET
+				return HttpResponseRedirect(new_url)
+	except:
+		pass
+
 
 	try:
 		huodong = Huodong.objects.get(huodong_id=huodong_id)
