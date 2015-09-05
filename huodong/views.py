@@ -200,6 +200,9 @@ def release(request, huodong_id):
 	# print 'here is static path: %s' % settings.STATICFILES_DIRS + 'img'
 	# print 'here is type: %s' % type(settings.STATICFILES_DIRS[0])
 	qr_path = settings.STATICFILES_DIRS[0] +'/img/' +str(huodong_id) +'.png'
+	print qr_path
+	qr_url = "http://127.0.0.1/" + qr_path
+	print qr_url
 	# print "daniel, here is qr: %s" % qr_path
 	gen_qr(ref_url, qr_path)
 
@@ -297,7 +300,22 @@ def gen_qr(url, path):
 
 
 
+def qr(request):
+	qr_id = request.session['qr']
+	words = 'Welcome to my world!!'
 
+	# print "daniel, here is qr: %s" % qr_path
+	gen_qr(words, qr_path)
+
+	# print Huodong.objects
+
+	template = "qr_zone.html"
+	context = {
+		'qr_id': str(qr_id)
+	}
+	print "daniel, huodong_id: " + str(qr_id)
+	return render(request, template, context)
+	#return HttpResponse("Here is your cache: %s" %  unicode(cache.get(huodong_id)))
 
 
 
