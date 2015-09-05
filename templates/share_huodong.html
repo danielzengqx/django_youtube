@@ -88,23 +88,27 @@ if ($signUpCount == 0){
         <div class="col-md-6 pull-right" style="text-align:center;">
         	<i class="fa fa-share-alt fa-5x"></i>
           	<!-- <h1>分享以下活动链接，让小伙伴参加你的活动吧！</h1> --><!--Daniel:  Seems the & and &amp; has the same effect on the website-->
-          	<p>分享活动链接，让小伙伴一起参与吧！</p>
+          	<p>分享活动页面/二维码<br>或<br>复制以下链接<br></p>
           	<div class="well" style="background-color:white;">{{ ref_url }} </div>
-	      	<!-- Share<br/> -->
-<!-- 	    <a href="https://www.facebook.com/sharer/sharer.php?u={{ ref_url }}url" target="_blank">
+          	<p>让小伙伴一起参与吧！</p>
+<!-- 	      	Share<br/>
+	    <a href="https://www.facebook.com/sharer/sharer.php?u={{ ref_url }}url" target="_blank">
 			<i class="fa fa-facebook-square fa-4x" style="color:#3b5998"></i>
-		</a> -->
+		</a>
 		<a href="https://www.linkedin.com/shareArticle?mini=true&url={{ ref_url }}&title=Share%20the%20link%20for%20your%20friends%20to%20%20join%20us.&summary=Share%20your%20unique%20link%20below%20via%20Email%2C%20Facebook%2C%20Twitter%2C%20Reddit%2C%20or%20LinkedIn%20to%20earn%20rewards%20from%20xiaoxiezi.net&source={{ ref_url }}" target="_blank">
         <i class="fa fa-linkedin-square fa-4x" style="color:#007bb6;"></i>
        	</a>
-		  <!-- <i class="fa fa-google-plus-square fa-4x" style="color:#D34836;"></i>	 -->
+		  <i class="fa fa-google-plus-square fa-4x" style="color:#D34836;"></i>	
 		  <i class="fa fa-weibo fa-4x" style="color:#900020;"></i>
           <i class="fa fa-weixin fa-4x" style="color:#30CB5F;"></i>
-          <i class="fa fa-renren fa-4x" style="color:#3b5998"></i>
+          <i class="fa fa-renren fa-4x" style="color:#3b5998"></i> -->
         </div>
 
         <div class="col-md-6 pull-left">
-          <img src="{% static 'img/launch.jpg' %}" class='img-responsive img-rounded' />
+          <!-- daniel: can't use the img dir directory, otherwise there will not be img showed. -->
+          <!-- <img src="/Users/daniel/daniel_code/project_mysite/djange_youtube/launch.png" class='img-responsive img-rounded' /> -->
+          <img src="/main-static/img/{{ huodong_id }}.png" class='img-responsive img-rounded' />
+          <!-- <img src="{% static 'img/launch.jpg' %}" class='img-responsive img-rounded' /> -->
         </div>
 
        </div>

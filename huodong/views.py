@@ -7,6 +7,8 @@ from models import Huodong, Info
 import sys
 from django.core.cache import cache
 from collections import OrderedDict
+import qrcode
+
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -194,6 +196,13 @@ def release(request, huodong_id):
 		huodong.save()
 
 	ref_url = settings.SHARE_URL + str(huodong_id)
+	#Generate QR image
+	# print 'here is static path: %s' % settings.STATICFILES_DIRS + 'img'
+	# print 'here is type: %s' % type(settings.STATICFILES_DIRS[0])
+	qr_path = settings.STATICFILES_DIRS[0] +'/img/' +str(huodong_id) +'.png'
+	# print "daniel, here is qr: %s" % qr_path
+	gen_qr(ref_url, qr_path)
+
 	# print Huodong.objects
 
 	template = "share_huodong.html"
@@ -204,11 +213,13 @@ def release(request, huodong_id):
 		# "location" : Location,
 		# "time" : Time,
 		# "questions_preview":questions_preview
-		'ref_url': ref_url
+		'ref_url': ref_url,
+		'huodong_id': str(huodong_id)
 		#'huodong_type': all_content['notice'].pop('活动类型'),
 		#'notices' : all_content['notice'],
 		#"questions" : all_content['questions_preview']
 	}
+	print "daniel, huodong_id: " + str(huodong_id)
 	return render(request, template, context)
 	#return HttpResponse("Here is your cache: %s" %  unicode(cache.get(huodong_id)))
 
@@ -268,7 +279,19 @@ def success(request):
 
 
 
+def gen_qr(url, path):	
+	qr = qrcode.QRCode(
+	    version=1,
+	    error_correction=qrcode.constants.ERROR_CORRECT_L,
+	    box_size=10,
+	    border=4,
+	)
+	qr.add_data(url)
+	qr.make(fit=True)
 
+	img = qr.make_image()
+	# img.save('/Users/daniel/daniel_code/project_mysite/django_youtube/static/static_dirs/img/daniel.png')
+	img.save(path)
 
 
 
