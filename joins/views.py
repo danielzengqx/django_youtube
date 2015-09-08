@@ -281,8 +281,6 @@ def weixin(request):
                                 </Articles>\
                                 </xml>"
 
-
-
 	    	return HttpResponse(response)
 	    else:
 	    	print "here is else %s" % request
