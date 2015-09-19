@@ -3,7 +3,7 @@
 from django.conf import settings 
 from django.shortcuts import render, HttpResponseRedirect
 from django.http import HttpResponse
-from models import Huodong, Info
+from models import Huodong, Info, UserHuodong
 import sys
 from django.core.cache import cache
 from collections import OrderedDict
@@ -22,9 +22,12 @@ def get_ip_address(ifname):
 
 # Create your views here.
 def home(request):
+	user_id = request.session['user']
 	response = "Welcome to huodong!"
 	template = "huodong.html"
-	context = {}
+	context = {
+		'user_id' : user_id
+	}
 	# for obj in  Huodong.objects.all():
 	# 	print "content: %s" % obj["all_content"]
 
@@ -42,7 +45,8 @@ def get_ref_id():
 		return ref_id
 
 def preview(request):
-
+	user_id = request.session['user']
+	print "here is user_id %s" % user_id
 	question_table = {\
 						'user_name': '姓名',\
 						'phone_num': '手机',\
@@ -73,6 +77,7 @@ def preview(request):
 	huodong_id = get_ref_id()
 	template = "preview.html"
 	context = {
+		"user_id" : user_id,
 		"type" : Type,
 		"title" : Title,
 		"fee" : Fee,
@@ -164,7 +169,7 @@ def join(request):
 # 	return HttpResponseRedirect("/huodong/preview/%s" % huodong_id)
 
 
-def release(request, huodong_id):
+def release(request, user_id, huodong_id):
 	all_content = cache.get(huodong_id)
 #	if request.method == 'POST':
 	# print "here is all content %s: " % all_content
@@ -208,10 +213,21 @@ def release(request, huodong_id):
 
 	# print Huodong.objects
 
+	#Put this huodong_id in to UserHuodong db.
+	try:
+		user_huodong = UserHuodong.objects.get(user_id=user_id)
+
+	except:
+		# huodong.huodong_id = huodong_id
+		user_huodong = UserHuodong(user_id)
+	
+	user_huodong.all_huodong.append(huodong_id)
+	user_huodong.save()
+
 	template = "share_huodong.html"
 	context = {
 		# "type" : Type,
-		# "title" : Title,
+		# "title" : Title,huo
 		# "fee" : Fee,
 		# "location" : Location,
 		# "time" : Time,
@@ -228,7 +244,7 @@ def release(request, huodong_id):
 
 def submit(request):
 
-	huodong_url = "http://127.0.0.1:8000/huodong"
+	huodong_url = "http://www.xiaoxiezi.net/huodong"
 	return HttpResponse("here is your url to share: " + huodong_url )
 
 
@@ -262,8 +278,8 @@ def success(request):
 	# info = Info.objects.get(join_id=join_id)
 	# for k, v in q_a.items():
 	# 	print k, v
-
-	with open("join_report.txt", "a") as f:
+	huodong_file = join_id + '.txt'
+	with open(huodong_file, "a") as f:
 		f.writelines(50 * "*" + "\n")
 		for k, v in q_a.items():
 			f.writelines(k +  (30 - len(k)) * " " + ":     " + v + "\n")
@@ -280,8 +296,30 @@ def success(request):
 
 	return	HttpResponse("提交成功！")
 
+def mine(request):
+	user_id = request.session['user']
+	print "here is my wechat id: %s" % user_id	
+
+	try:
+		user_huodong = UserHuodong.objects.get(user_id=user_id)
+
+	except:
+		print "some thing wrong with user_id*****************\n"
+
+	huodongs = user_huodong.all_huodong
 
 
+
+	# template = "mine.html"
+	context = {
+		'user_id' : user_id,
+		'huodongs' : huodongs
+
+	}
+
+	
+	return HttpResponse(user_id + '\n' +str(huodongs))
+	# return render(request, template, context)
 def gen_qr(url, path):	
 	qr = qrcode.QRCode(
 	    version=1,
@@ -317,7 +355,6 @@ def qr(request):
 	}
 	return render(request, template, context)
 	#return HttpResponse("Here is your cache: %s" %  unicode(cache.get(huodong_id)))
-
 
 
 

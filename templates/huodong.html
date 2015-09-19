@@ -24,7 +24,7 @@
       <div class="col-sm-6 col-sm-offset-3" > <!-- Move columns to the right using .col-md-offset-* classes. -->
         <h1>发布活动</h1>
 
-        <form method="post" action="/huodong/preview/">
+        <form method="post" action="/huodong/preview/?user_id={{ user_id }}">
           {% csrf_token %}
           <div class="form-group">
           <label for="exampleInputEmail1">活动类型</label>

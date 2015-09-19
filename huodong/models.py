@@ -25,3 +25,12 @@ class Info(Document):
 	q_a = ListField()
 	def __unicode__(self):
 		return "%s" % (self.join_id)
+
+
+class UserHuodong(Document):
+	#wechat_id is encripted by wechat
+	user_id = StringField(max_length=50)
+	#all_huodong is a list contains all of the huodong_id for this User
+	all_huodong = ListField() 
+	def __unicode__(self):
+		return "%s" % (self.wechat_id)
