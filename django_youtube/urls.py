@@ -12,6 +12,7 @@ urlpatterns = patterns('',
 
  	url(r'^admin', include(admin.site.urls)),
     url(r'^$', 'joins.views.home', name='home'),
+    url(r'^kindle/$', 'joins.views.kindle', name='kindle'),
 	url(r'^weixin$', 'joins.views.weixin', name='weixin'),
 	#In Python regular expressions, the syntax for named regular-expression groups is (?P<name>pattern), \
 	#where name is the name of the group and pattern is some pattern to matchself.

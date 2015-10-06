@@ -289,3 +289,9 @@ def weixin(request):
 	except Exception, error: #to print the error
 		print error
 
+def kindle(request):
+	context = {}
+	template = 'kindleren_summary.html'
+	return render(request, template, context)
+	
+
