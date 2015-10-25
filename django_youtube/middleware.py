@@ -3,7 +3,7 @@ from joins.models import Join
 
 class ReferMiddleware():
 	def process_request(self, request):
-		#print "here is the request: \n%s" % request
+		print "here is the request: \n%s" % request
 		# try:
 		# 	ref_id = request.GET.get("ref", "")
 		# except:
@@ -13,6 +13,7 @@ class ReferMiddleware():
 		request.session['qr'] = request.GET.get("qr_id", "") 
 		request.session['words'] = request.GET.get("words", "") 
 		request.session['user'] = request.GET.get("user_id", "")
+		request.session['file'] = request.GET.get("file", "")
 		try:
 			request.session['join_id'] = request.META.get("HTTP_REFERER").split("=")[1]
 		except :

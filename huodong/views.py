@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 # coding=gbk
+# from __future__ import absolute_import
+
 from django.conf import settings 
 from django.shortcuts import render, HttpResponseRedirect
 from django.http import HttpResponse
@@ -8,7 +10,7 @@ import sys
 from django.core.cache import cache
 from collections import OrderedDict
 import qrcode
-
+import csv
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -200,6 +202,8 @@ def release(request, user_id, huodong_id):
 		huodong.all_content = all_content
 		huodong.save()
 
+
+
 	ref_url = settings.SHARE_URL + str(huodong_id)
 	#Generate QR image
 	# print 'here is static path: %s' % settings.STATICFILES_DIRS + 'img'
@@ -221,8 +225,22 @@ def release(request, user_id, huodong_id):
 		# huodong.huodong_id = huodong_id
 		user_huodong = UserHuodong(user_id)
 	
-	user_huodong.all_huodong.append(huodong_id)
+	# print "here is origin all huodongs" + 50*"="
+	# print user_huodong.all_huodong
+	if huodong_id not in user_huodong.all_huodong:
+		user_huodong.all_huodong.append(huodong_id)
 	user_huodong.save()
+
+	# print "here is after all huodongs" + 50*"*"
+	# print user_huodong.all_huodong
+
+	release_file = huodong_id + '.csv'
+
+	print all_content['questions_preview']
+
+	with open(release_file, 'wb') as f:
+		writer = csv.writer(f)
+		writer.writerow(all_content['questions_preview'])
 
 	template = "share_huodong.html"
 	context = {
@@ -238,7 +256,7 @@ def release(request, user_id, huodong_id):
 		#'notices' : all_content['notice'],
 		#"questions" : all_content['questions_preview']
 	}
-	print "daniel, huodong_id: " + str(huodong_id)
+	# print "daniel, huodong_id: " + str(huodong_id)
 	return render(request, template, context)
 	#return HttpResponse("Here is your cache: %s" %  unicode(cache.get(huodong_id)))
 
@@ -278,11 +296,37 @@ def success(request):
 	# info = Info.objects.get(join_id=join_id)
 	# for k, v in q_a.items():
 	# 	print k, v
-	huodong_file = join_id + '.txt'
-	with open(huodong_file, "a") as f:
-		f.writelines(50 * "*" + "\n")
-		for k, v in q_a.items():
-			f.writelines(k +  (30 - len(k)) * " " + ":     " + v + "\n")
+	huodong_file = join_id + '.csv'
+
+	if os.path.isfile(huodong_file):
+		print "file exists *" + 50*"*"
+		with open(huodong_file, 'ab') as f:	
+			row_a = list()
+			writer = csv.writer(f)
+			print "here is q_a:" + 50*"*"
+			print q_a.items()
+			for k, v in q_a.items():
+				row_a.append(v)
+			writer.writerow(row_a)
+
+	else:
+		print "file no exists " + 50*"-"
+		with open(huodong_file, 'wb') as f:	
+			row_q = list()
+			row_a = list()
+			writer = csv.writer(f)
+
+			# writer.writerow(all_content['questions_preview'])
+			for k, v in q_a.items():
+				row_q.append(k)
+				row_a.append(v)
+			writer.writerow(row_q)
+			writer.writerow(row_a)
+
+	# with open(huodong_file, "a") as f:
+	# 	f.writelines(50 * "*" + "\n")
+	# 	for k, v in q_a.items():
+	# 		f.writelines(k +  (30 - len(k)) * " " + ":     " + v + "\n")
 
 
 
@@ -294,7 +338,38 @@ def success(request):
 	# for q_a in info_save.q_a:
 	# 	print q_a
 
-	return	HttpResponse("提交成功！")
+	# return	HttpResponse("提交成功！")
+
+
+
+	template = "success.html"
+	context = {
+		# 'user_id' : user_id,
+		# 'id_titles' : id_titles,
+
+	}
+
+	return render(request, template, context)
+
+
+# from django.utils.encoding import smart_str
+
+import os
+from django.core.servers.basehttp import FileWrapper
+
+
+def write_csv(request):
+	# Create the HttpResponse object with the appropriate CSV header.
+	file = request.session['file']
+	path = os.getcwd()
+	# file = path + '/02adc9a4d3.csv'
+	print path
+	wrapper = FileWrapper(open( file, "r" )	)
+	response = HttpResponse(wrapper, content_type='text/csv')
+	response.write('\xEF\xBB\xBF')
+	response['Content-Disposition'] = 'attachment; filename="' + file + '"'
+	return response
+
 
 def mine(request):
 	user_id = request.session['user']
@@ -308,18 +383,28 @@ def mine(request):
 
 	huodongs = user_huodong.all_huodong
 
+	print "here is all huodongs" + 50*"="
+	print huodongs
 
+	id_titles = OrderedDict()
+	for id in huodongs :
+		huodong = Huodong.objects.get(huodong_id=id)
+		id_titles[id] = huodong.all_content['notice']['title']
 
-	# template = "mine.html"
+	print "here is huodong title %s" % id_titles
+
+	template = "mine.html"
 	context = {
 		'user_id' : user_id,
-		'huodongs' : huodongs
+		'id_titles' : id_titles,
 
 	}
 
 	
-	return HttpResponse(user_id + '\n' +str(huodongs))
-	# return render(request, template, context)
+	# return HttpResponse(user_id + '\n' +str(huodongs))
+	return render(request, template, context)
+
+
 def gen_qr(url, path):	
 	qr = qrcode.QRCode(
 	    version=1,
@@ -355,6 +440,7 @@ def qr(request):
 	}
 	return render(request, template, context)
 	#return HttpResponse("Here is your cache: %s" %  unicode(cache.get(huodong_id)))
+
 
 
 
