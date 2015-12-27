@@ -18,7 +18,7 @@ urlpatterns = patterns('',
 	#where name is the name of the group and pattern is some pattern to matchself.
 	url(r'^(?P<ref_id>\w{10})$', 'joins.views.share', name='share'),   	
 	url(r'^huodong/',include('huodong.urls',namespace="huodong")),
-
+	url(r'^yearbook/',include('yearbook.urls',namespace="yearbook")),
 	# url(r'^huodong$', 'huodong.views.home', name='home'),	
 	# url(r'^huodong/preview$', 'huodong.views.preview', name='preview'),	
 
