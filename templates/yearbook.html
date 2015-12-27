@@ -9,13 +9,13 @@
   carousel : cycle;
   }
 .slider-size {
-  height: 1500px; /*This is your slider height*/
+  height: 1200px; /*This is your slider height*/
   /*width: 1000px;*/
 
 }
 .carousel {
-  width:100%;
-  margin:0 auto; /*center your carousel if other than 100%*/
+  width:80%;
+  margin:10% auto; /*center your carousel if other than 100%*/
 
 }
 
@@ -36,9 +36,12 @@
 <body>
 
  
-<div class='container' >
+<!-- <div class='container' > -->
      <!-- <div class="col-sm-6 col-sm-offset-3" > -->
-      <audio src="/main-static/audio/innocent.m4a" autoplay="autoplay" controls="controls" loop="loop"></audio>
+      <!-- <audio src="/main-static/audio/innocent.m4a"  autoplay="autoplay" controls="controls" loop="loop"></audio> -->
+      <!-- <audio src="/main-static/audio/shenlin.mp3"   controls="controls" loop="loop"></audio> -->
+
+
     <!-- </div>  -->
   <div id="myCarousel" class="carousel slide" data-ride="carousel">
      <!-- 轮播（Carousel）指标 -->
@@ -46,6 +49,12 @@
         <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
         <li data-target="#myCarousel" data-slide-to="1"></li>
         <li data-target="#myCarousel" data-slide-to="2"></li>
+        <li data-target="#myCarousel" data-slide-to="3"></li>
+        <li data-target="#myCarousel" data-slide-to="4"></li>
+        <li data-target="#myCarousel" data-slide-to="5"></li>
+        <li data-target="#myCarousel" data-slide-to="6"></li>       
+        <li data-target="#myCarousel" data-slide-to="7"></li>
+        <li data-target="#myCarousel" data-slide-to="8"></li>                 
      </ol>   
      <!-- 轮播（Carousel）项目 -->
      <div class="carousel-inner">
@@ -55,6 +64,36 @@
            background-size:cover;" class="slider-size">
            <div class="carousel-caption">那年，我们说走就走的旅行</div>
         </div>
+        </div>
+         <div class="item">
+           <div style="background:url(/main-static/img/material_4.jpg) center center; 
+           background-size:cover;" class="slider-size">
+           <div class="carousel-caption">那年，我们说走就走的旅行</div>
+        </div>
+        </div>
+         <div class="item">
+           <div style="background:url(/main-static/img/material_5.jpg) center center; 
+           background-size:cover;" class="slider-size">
+           <div class="carousel-caption">那年，我们说走就走的旅行</div>
+        </div>
+        </div>
+         <div class="item">
+            <div style="background:url(/main-static/img/material_6.jpg) center center; 
+           background-size:cover;" class="slider-size">
+           <div class="carousel-caption">那年，我们说走就走的旅行</div>
+        </div>
+        </div>
+         <div class="item">
+            <div style="background:url(/main-static/img/material_7.jpg) center center; 
+           background-size:cover;" class="slider-size">
+           <div class="carousel-caption">那年，我们说走就走的旅行</div>
+        </div>
+        </div>
+         <div class="item">
+           <div style="background:url(/main-static/img/material_8.jpg) center center; 
+           background-size:cover;" class="slider-size">
+           <div class="carousel-caption">那年，我们说走就走的旅行</div>
+        </div>        
         </div>
         <div class="item">
           <!-- <img src="/main-static/img/material_2.jpg" alt="Second slide"> -->
@@ -86,13 +125,26 @@
         <input type="button" class="btn slide-two" value="Slide 2">            
         <input type="button" class="btn slide-three" value="Slide 3"> -->
      </div>
-  </div>
+  <!-- </div> -->
+    <button type="submit" class="btn btn-primary btn-lg btn-block">背景音乐</button>
+
 <script>
 
+
    $(function(){
+          // window.alert("hello");
+
       $('.carousel').carousel({
       interval: 3500
     });
+
+      $("button").click(function(){
+      var snd = new Audio("/main-static/audio/innocent.m4a"); // buffers automatically when created
+      snd.play();
+      // window.alert("hello");
+      });
+
+    
 
       // // 停止轮播
       // $(".pause-slide").click(function(){
