@@ -118,7 +118,7 @@ STATICFILES_DIRS = (
     #'/Users/daniel/daniel_code/project_mysite/django_youtube/static/static_root',
     )
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'static', 'media')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
 

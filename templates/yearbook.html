@@ -1,10 +1,9 @@
-
-
 <!DOCTYPE html>
 {% load staticfiles %} 
 
 <html>
 <style>
+
 #myCarousel{
   carousel : cycle;
   }
@@ -14,7 +13,7 @@
 
 }
 .carousel {
-  width:80%;
+  width:90%;
   margin:10% auto; /*center your carousel if other than 100%*/
 
 }
@@ -26,12 +25,32 @@
   color: #ffffff;
   /*opacity: 0.2;*/
 }
+
+#button {
+  width:90%;
+  margin:10% auto;
+
+
+}
+
+
+body {
+  /*background-image:  url("{% static 'img/beach.jpg' %}" );*/
+}
 </style>
+
 <head>
-   <title>2015，这一年</title>
-   <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
-   <script src="{% static 'js/jquery.min.js' %}"></script>
-   <script src="{% static 'js/bootstrap.min.js' %}"></script>
+  <title>2015，这一年</title>
+  <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+  <script src="{% static 'js/jquery.min.js' %}"></script>
+  <script src="{% static 'js/bootstrap.min.js' %}"></script>
+  <link href="{% static 'css/fileinput.min.css' %}" media="all" rel="stylesheet" type="text/css" />
+  <script src="{% static 'js/canvas-to-blob.min.js' %}" type="text/javascript"></script>
+  <script src="{% static 'js/bootstrap-fileinput/js/fileinput.min.js' %}"></script>
+  <script src="{% static 'js/bootstrap-fileinput/js/fileinput_locale_zh.js' %}"></script>
+  <script src="{% static 'js/jquery-cookie/jquery.cookie.js' %}"></script>
+
+
 </head>
 <body>
 
@@ -47,68 +66,35 @@
      <!-- 轮播（Carousel）指标 -->
      <ol class="carousel-indicators">
         <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-        <li data-target="#myCarousel" data-slide-to="1"></li>
-        <li data-target="#myCarousel" data-slide-to="2"></li>
-        <li data-target="#myCarousel" data-slide-to="3"></li>
-        <li data-target="#myCarousel" data-slide-to="4"></li>
-        <li data-target="#myCarousel" data-slide-to="5"></li>
-        <li data-target="#myCarousel" data-slide-to="6"></li>       
-        <li data-target="#myCarousel" data-slide-to="7"></li>
-        <li data-target="#myCarousel" data-slide-to="8"></li>                 
+        {% if documents %}
+          {% for i in documents%}
+            <li data-target="#myCarousel" data-slide-to={{ forloop.counter }}></li>
+           {% endfor %}   
+        {% endif %} 
      </ol>   
      <!-- 轮播（Carousel）项目 -->
+     {% for k,v in img_tittle %}
+     <p>k</p>
+     <p>v</p>
+     {% endfor %}
      <div class="carousel-inner">
         <div class="item active">
            <!-- <img src="/main-static/img/material_1.jpg" alt="First slide"> -->
-           <div style="background:url(/main-static/img/material_1.jpg) center center; 
+          <div style="background:url(/main-static/img/material_1.jpg) center center; 
            background-size:cover;" class="slider-size">
-           <div class="carousel-caption">那年，我们说走就走的旅行</div>
-        </div>
-        </div>
-         <div class="item">
-           <div style="background:url(/main-static/img/material_4.jpg) center center; 
-           background-size:cover;" class="slider-size">
-           <div class="carousel-caption">那年，我们说走就走的旅行</div>
-        </div>
-        </div>
-         <div class="item">
-           <div style="background:url(/main-static/img/material_5.jpg) center center; 
-           background-size:cover;" class="slider-size">
-           <div class="carousel-caption">那年，我们说走就走的旅行</div>
-        </div>
-        </div>
-         <div class="item">
-            <div style="background:url(/main-static/img/material_6.jpg) center center; 
-           background-size:cover;" class="slider-size">
-           <div class="carousel-caption">那年，我们说走就走的旅行</div>
-        </div>
-        </div>
-         <div class="item">
-            <div style="background:url(/main-static/img/material_7.jpg) center center; 
-           background-size:cover;" class="slider-size">
-           <div class="carousel-caption">那年，我们说走就走的旅行</div>
-        </div>
-        </div>
-         <div class="item">
-           <div style="background:url(/main-static/img/material_8.jpg) center center; 
-           background-size:cover;" class="slider-size">
-           <div class="carousel-caption">那年，我们说走就走的旅行</div>
-        </div>        
-        </div>
-        <div class="item">
-          <!-- <img src="/main-static/img/material_2.jpg" alt="Second slide"> -->
-          <div style="background:url(/main-static/img/material_2.jpg) center center; 
-           background-size:cover;" class="slider-size">
-          <div class="carousel-caption">那年，我们遇到的女孩</div>
+              <div class="carousel-caption">那年，我们说走就走的旅行</div>
           </div>
         </div>
-        <div class="item">
-          <!-- <img src="/main-static/img/material_3.jpg" alt="Third slide"> -->
-          <div style="background:url(/main-static/img/material_3.jpg) center center; 
-           background-size:cover;" class="slider-size">
-          <div class="carousel-caption">那年，我们看过的电影</div>
-          </div>
-        </div>
+        {% if documents %}
+          {% for document in documents %}
+             <div class="item">
+              <div style="background:url({{ document.docfile.url }}) center center; 
+               background-size:cover;" class="slider-size">
+                <div class="carousel-caption">{}}</div>
+              </div>
+            </div>
+            {% endfor %}
+        {% endif %}
      </div>
      <!-- 轮播（Carousel）导航 -->
      <a class="carousel-control left" href="#myCarousel" 
@@ -126,20 +112,86 @@
         <input type="button" class="btn slide-three" value="Slide 3"> -->
      </div>
   <!-- </div> -->
-    <button type="submit" class="btn btn-primary btn-lg btn-block">背景音乐</button>
+  <!-- <div class="col-sm-6 col-sm-offset-3" > -->
 
+<!-- MAXIMUM IMAGE DIMENSIONS -->
+
+<!-- $.ajaxSetup({headers: {"X-CSRFToken": '{{ csrf_token }}'}}); -->
+<!-- <input id="input-dim-2" name="inputdim2[]" type="file" multiple class="file-loading" accept="image/*"> -->
+<!-- <label class="control-label">Select File</label> -->
+<!-- <input id="input-1" type="file" class="file"> -->
+
+                <!-- List of uploaded documents -->
+                {% if documents %}
+                        <ul>
+                        {% for document in documents %}
+                                <li><a href="{{ document.docfile.url }}">{{ document.docfile.name }}
+                                <!-- <img src="{{ document.docfile.url }}" alt="{{ document.docfile.name }}"> -->
+                                    </a>
+                                </li>
+                        {% endfor %}
+                        </ul>
+                {% else %}
+                        <p>No documents.</p>
+                {% endif %}
+                <!-- Upload form. Note enctype attribute! -->  
+  
+                <form action={% url 'yearbook:home'  %} method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+
+
+                  <div class="form-group">
+                    <label for="comment">Name</label>
+                    <input type="text" class="form-control" name="comment" placeholder="Jane Doe">
+                  </div>
+                  <div class="form-group">
+                        
+                        <p>{{ form.non_field_errors }}</p>
+                        <p>{{ form.docfile.label_tag }} </p>
+                        <p>
+                                {{ form.docfile.errors }}
+                                {{ form.docfile }}
+                        </p>      
+                 </div>
+                        <p><input type="submit" value="Upload" /></p>
+                </form>
+
+
+<script>
+// var csrftoken = $.cookie('csrftoken');
+
+// $("#input-dim-2").fileinput({
+//     uploadUrl: "{% url 'yearbook:home'  %}" ,
+//     allowedFileExtensions: ["jpg", "png", "gif"],
+//     maxImageWidth: 2000,
+//     maxImageHeight: 2000,
+//     uploadExtraData: csrftoken
+// });
+
+
+</script>
+
+
+    <!-- <button id="button" type="submit" class="btn btn-primary btn-lg btn-block">背景音乐</button> -->
+  <!-- </div> -->
 <script>
 
 
    $(function(){
           // window.alert("hello");
 
+          // initialize with defaults
+      $("#input-id").fileinput();
+
+      // with plugin options
+      $("#input-id").fileinput({'showUpload':false, 'previewFileType':'any'});
+
       $('.carousel').carousel({
       interval: 3500
     });
 
       $("button").click(function(){
-      var snd = new Audio("/main-static/audio/innocent.m4a"); // buffers automatically when created
+      var snd = new Audio("/main-static/audio/Innocent.mp3"); // buffers automatically when created
       snd.play();
       // window.alert("hello");
       });
