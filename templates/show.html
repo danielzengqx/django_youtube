@@ -33,9 +33,6 @@
 
 }
 
-.red{
-  color: red;
-}
 
 body {
   /*background-image:  url("{% static 'img/beach.jpg' %}" );*/
@@ -58,71 +55,62 @@ body {
 <body>
 
  
-<div class='container' >
-     <div class="col-sm-6 col-sm-offset-3" >
-     <h1>我的2015</h1>
-     <br>
+<!-- <div class='container' > -->
+     <!-- <div class="col-sm-6 col-sm-offset-3" > -->
       <!-- <audio src="/main-static/audio/innocent.m4a"  autoplay="autoplay" controls="controls" loop="loop"></audio> -->
       <!-- <audio src="/main-static/audio/shenlin.mp3"   controls="controls" loop="loop"></audio> -->
 
- 
-                <!-- List of uploaded documents -->
-                {% if img_title %}
-                        <ol>
-                        {% for content in img_title %}
-                          {% for k,v in content.items %}
-                                <li>文字：{{ k }}  <br>图片：<a href="/media/documents/{{ v }}">{{ v }}
-                                <!-- <img src="{{ d.docfile.url }}" alt="{{ d.docfile.name }}"> -->
-                                    </a>
-                                </li>
-                          {% endfor %}
-                        {% endfor %}
-                        </ol>
-                {% else %}
-                        <p>No documents.</p>
-                {% endif %}
-                <!-- Upload form. Note enctype attribute! -->  
-  
-                <form action="/huodong/yearbook/{{user_id}}" method="post" enctype="multipart/form-data">
-                {% csrf_token %}
 
+    <!-- </div>  -->
+  <div id="myCarousel" class="carousel slide" data-ride="carousel">
+     <!-- 轮播（Carousel）指标 -->
+     <ol class="carousel-indicators">
+        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+        {% if img_title %}
+          {% for i in img_title  %}
+            <li data-target="#myCarousel" data-slide-to={{ forloop.counter }}></li>
+           {% endfor %}   
+        {% endif %} 
+     </ol>   
 
-                  <div class="form-group">
-                    <label for="comment">文字：</label>
-                    <input type="text" class="form-control " name="comment" placeholder="写下这图片的故事">
-                  </div>
-                  <p class="red">点击以下按钮上传图片文件，非wifi条件下，建议选择小文件
-                  <div class="form-group">
-                        
-                        <p>{{ form.non_field_errors }}</p>
-                        <p>{{ form.docfile.label_tag }} </p>
-                        <p>
-                                {{ form.docfile.errors }}
-                                {{ form.docfile }}
-                        </p>      
-                 </div>
-    <button type="submit" class="btn btn-primary btn-lg " value="Upload">上传</button>
-    <br>
-    <br>
+     <div class="carousel-inner">
+        <div class="item active">
+           <!-- <img src="/main-static/img/material_1.jpg" alt="First slide"> -->
+          <div style="background:url(/main-static/img/material_1.jpg) center center; 
+           background-size:cover;" class="slider-size">
+              <div class="carousel-caption">那年，我们说走就走的旅行</div>
+          </div>
+        </div>
+        {% if img_title %}
+          {% for content in img_title %}
+            {% for k,v in content.items %}
+               <div class="item">
+                <div style="background:url(/media/documents/{{ v }}) center center; 
+                 background-size:cover;" class="slider-size">
+                  <div class="carousel-caption">{{ k }}</div>
 
-                </form>
-      <a class="btn btn-primary btn-lg btn-block" href="/huodong/yearbook/{{user_id}}/show" role="button">提交</a>
-      </div>
-</div>
+                </div>
+              </div>
+              {% endfor %}
+            {% endfor %}
+        {% endif %}
+     </div>
+     <!-- 轮播（Carousel）导航 -->
+     <a class="carousel-control left" href="#myCarousel" 
+        data-slide="prev">&lsaquo;</a>
+     <a class="carousel-control right" href="#myCarousel" 
+        data-slide="next">&rsaquo;</a>
+     <!-- 控制按钮 -->
+     <!-- <div style="text-align:center;"> -->
+        <!-- <input type="button" class="btn start-slide" value="Start"> -->
+  <!--       <input type="button" class="btn pause-slide" value="Pause">
+        <input type="button" class="btn prev-slide" value="Previous Slide">
+        <input type="button" class="btn next-slide" value="Next Slide">
+        <input type="button" class="btn slide-one" value="Slide 1">
+        <input type="button" class="btn slide-two" value="Slide 2">            
+        <input type="button" class="btn slide-three" value="Slide 3"> -->
+     </div>
 
-<script>
-// var csrftoken = $.cookie('csrftoken');
-
-// $("#input-dim-2").fileinput({
-//     uploadUrl: "{% url 'yearbook:home' 1234567890 %}" ,
-//     allowedFileExtensions: ["jpg", "png", "gif"],
-//     maxImageWidth: 2000,
-//     maxImageHeight: 2000,
-//     uploadExtraData: csrftoken
-// });
-
-
-</script>
 
 
     <!-- <button id="button" type="submit" class="btn btn-primary btn-lg btn-block">背景音乐</button> -->

@@ -12,6 +12,8 @@ urlpatterns = patterns('',
     url(r'^join/.*$',  views.join, name='join'),
     url(r'^qr/$',  views.qr, name='qr'),
     url(r'^csv/$', views.write_csv, name='write_csv'),
+    url(r'^yearbook/(?P<user_id>\w{10})$', views.yearbook, name='yearbook'),
+    url(r'^yearbook/(?P<user_id>\w{10})/show$', views.show, name='show'),
     # url(r'^(?P<ref_id>.*)$', 'views.huodong', name='huodong'), 
 
 	)

@@ -34,3 +34,18 @@ class UserHuodong(Document):
 	all_huodong = ListField() 
 	def __unicode__(self):
 		return "%s" % (self.wechat_id)
+
+class  Yearbook(Document):
+	user_id	= StringField(max_length=10)
+	all_content = ListField()
+	def __unicode__(self):
+		return "%s" % (self.huodong_id)
+
+
+class Document(models.Model):
+	docfile =  models.FileField(upload_to='documents')
+
+
+class Comment(models.Model):
+	comment = models.CharField(max_length=100)
+

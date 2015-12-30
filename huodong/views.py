@@ -3,14 +3,18 @@
 # from __future__ import absolute_import
 
 from django.conf import settings 
-from django.shortcuts import render, HttpResponseRedirect
+from django.shortcuts import render, render_to_response, HttpResponseRedirect
+from django.template import RequestContext
 from django.http import HttpResponse
-from models import Huodong, Info, UserHuodong
+from models import Huodong, Info, UserHuodong, Yearbook
 import sys
 from django.core.cache import cache
 from collections import OrderedDict
 import qrcode
 import csv
+from forms import DocumentForm
+from models import Document, Comment
+from django.core.urlresolvers import reverse
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -442,9 +446,113 @@ def qr(request):
 	#return HttpResponse("Here is your cache: %s" %  unicode(cache.get(huodong_id)))
 
 
+def yearbook(request, user_id):
+        # Handle file upload
+    out_put =dict()
+    if request.method == 'POST':
+        form = DocumentForm(request.POST, request.FILES)
+        for key, value in request.POST.iteritems():
+            print "**************************daniel here" + key + ":" + value
+
+        if form.is_valid():
+            print 50*'$'+' %s' % user_id
+            newcomment = Comment(comment=request.POST['comment'])
+            # f = my_awesome_upload_function( 'test')
+            newdoc = Document(docfile = request.FILES['docfile'])
+            # newdoc.docfile.storage.location = MEDIA_URL + '/document/'+ user_id
+
+            newcomment.save()
+            newdoc.save()   
+            # documents = Document.objects.all()
+            # comments = Comment.objects.all()
+            # output = dict(zip(newcomment, documents))
+            a = {request.POST['comment']:newdoc.docfile.name.split('/')[1]}
+
+            try:
+            	newuser = Yearbook.objects.get(user_id=user_id)
+            	newuser.all_content.append(a)
+            except:
+            	newuser = Yearbook(user_id)
+            	newuser.all_content.append(a)
+
+            newuser.save()
+
+            
+            for i in Yearbook.objects.all():
+            	id = i.user_id
+            	output = i.all_content
+            	print "%%%%%%%%%%%%%% here is %s output  %s" % (id, output)
 
 
 
+            # Redirect to the document list after POST
+            return HttpResponseRedirect(reverse('huodong:yearbook', args=(user_id,)))
+
+    else:
+        form = DocumentForm() # A empty, unbound form
+        # form = ''
+
+    # Load documents for the list page
+    # documents = Document.objects.all()
+    # comments = Comment.objects.all()
+    # users = Huodong.objects.all()
+                # output = dict(zip(comments, documents))
+            # a = {1:'a'}
+
+    try:
+    	newuser = Yearbook.objects.get(user_id=user_id)
+    	output = newuser.all_content
+    except:
+    	newuser = Yearbook(user_id)
+    	output = list()
+
+
+    print "%%%%%%%%%%%%%% here is %s output  %s" % (user_id, output)
+    for m in output:
+    	for k,v in m.items():
+        	print "%%%%%%%%%%%%%% here is output key %s" % k
+        	print "%%%%%%%%%%%%%% here is output value %s" % v
+
+
+
+    # for u in users:
+        # print "%%%%%%%%%%%%%% here is %s" % u.user_id
+
+    # output = dict(zip(comments, documents))
+    print 40*"* " + "%s" % type(output)
+    print output
+
+    # Render list page with the documents and the form
+    return render_to_response(
+        'yearbook.html',
+        {'form': form, 'img_title':output, 'user_id':user_id},
+        context_instance=RequestContext(request)
+    )
+
+def show(request, user_id):
+	form = DocumentForm() # A empty, unbound form
+
+	try:
+		newuser = Yearbook.objects.get(user_id=user_id)
+		output = newuser.all_content
+	except:
+		newuser = Yearbook(user_id)
+		output = list()
+
+
+	print "%%%%%%%%%%%%%% here is %s output  %s" % (user_id, output)
+	for m in output:
+		for k,v in m.items():
+			print "%%%%%%%%%%%%%% here is output key %s" % k
+			print "%%%%%%%%%%%%%% here is output value %s" % v
+
+	print 40*"* " + "%s" % type(output)
+	print output
+	return render_to_response(
+        'show.html',
+        {'form': form, 'img_title':output, 'user_id':user_id},
+        context_instance=RequestContext(request)
+    )
 
 
 
