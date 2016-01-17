@@ -446,6 +446,8 @@ def qr(request):
 	#return HttpResponse("Here is your cache: %s" %  unicode(cache.get(huodong_id)))
 
 
+from resize_img import cropped_thumbnail
+from PIL import Image
 def yearbook(request, user_id):
         # Handle file upload
     out_put =dict()
@@ -460,12 +462,20 @@ def yearbook(request, user_id):
             # f = my_awesome_upload_function( 'test')
             newdoc = Document(docfile = request.FILES['docfile'])
             # newdoc.docfile.storage.location = MEDIA_URL + '/document/'+ user_id
-
+	    
             newcomment.save()
             newdoc.save()   
             # documents = Document.objects.all()
             # comments = Comment.objects.all()
             # output = dict(zip(newcomment, documents))
+	    
+	    #Resize the img
+	    size = 1000, 1260
+	    
+	    input = Image.open("/home/daniel/django_youtube"+newdoc.docfile.url)
+	    output = cropped_thumbnail(input,size)
+	    output.save("/home/daniel/django_youtube"+ newdoc.docfile.url, "JPEG")
+
             a = {request.POST['comment']:newdoc.docfile.name.split('/')[1]}
 
             try:

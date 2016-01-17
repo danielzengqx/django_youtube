@@ -1,4 +1,5 @@
-#-*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
+
 # Create your views here.
 from django.conf	import settings 
 from django.shortcuts import render, HttpResponseRedirect, Http404
@@ -158,9 +159,10 @@ def weixin(request):
 	    	toUser = xml.find("ToUserName").text
 	    	#return self.render.reply_text(fromUser,toUser,int(time.time()),u"I'm still in developing, what you typed are:"+content)
 	    	#return autoReply(request)
-	    	if msgType == "event":
-	    		event = xml.find("Event").text
-	    		rawContent = "你好，欢迎关注AA活动助手\n发送数字“1”，可发布活动。\n回复其他任意字符，将生成二维码。>_< \n\n--- 小鞋子(1129321939)"
+
+		if msgType == "event":
+			event = xml.find("Event").text
+	    		rawContent = "你好，欢迎关注小鞋子\n发送任意字符\n创建《我的2015》,\n每次发送会重新生成配置页面>_< \n\n--- 小鞋子(1129321939)"
 	    		content = unicode(rawContent, "utf-8")
 		    	response = "<xml>\
 							<ToUserName><![CDATA[" + fromUser +"]]></ToUserName>\
@@ -168,24 +170,21 @@ def weixin(request):
 							<CreateTime>1431255793</CreateTime>\
 							<MsgType><![CDATA[text]]></MsgType>\
 							<Content><![CDATA[" + content + "]]></Content>\
-							</xml>"
+							</xml>"	    	
+		else:
+			yearbook_id = get_ref_id()			
+			vl_pic_url1 = "http://a3.qpic.cn/psb?/V117jtH93YWWiG/Ww1ZkeceACvL6Vv.2i*RWwf0fg0UBPnJR6qDtkm9.vM!/b/dFsBAAAAAAAA&bo=XgOAAgAAAAAFAPw!&rf=viewer_4&t=5"
+			vl_pic_url = "http://a3.qpic.cn/psb?/V117jtH93YWWiG/Ww1ZkeceACvL6Vv.2i*RWwf0fg0UBPnJR6qDtkm9.vM!/b/dFsBAAAAAAAA&bo=XgOAAgAAAAAFAPw!&rf=viewer_4&t=5"
+	    		#content = unicode(rawContent, "utf-8")
+			vl_url1 = "http://www.xiaoxiezi.net/huodong/yearbook/" + yearbook_id
+			vl_url = "http://www.xiaoxiezi.net/huodong/yearbook/" + yearbook_id
 
-	    	else:
-		    	content = xml.find("Content").text # get user input content
-		    	if content == "0":
-		    		vl_title1 = "我的活动"
-		    		vl_description1 = "我的活动"
-		    		vl_pic_url1 = "http://qpic.cn/z1xw6oEUp"
-		    		# "http://b87.photo.store.qq.com/psb?/V117jtH91i6nzd/*iBbJ98RLScbg*EF4QwUsi3rYA1zWHBJYq*hw6qM3a4!/b/dODm6DPGfAAA&bo=ngK*AQAAAAABAAU!&rf=viewer_4&t=5"
-                                vl_url1 = "http://www.xiaoxiezi.net/huodong/mine/?user_id=" + fromUser 	
+			vl_title1 = "我的2015"
+			vl_description1 = "我的2015"
+			vl_title = "我的2015"
+			vl_description = "我的2015"
 
-		    		vl_title = "我的活动"
-		    		vl_description = "我的活动"
-		    		vl_pic_url = "http://qpic.cn/z1xw6oEUp"
-		    		# "http://b88.photo.store.qq.com/psb?/V117jtH91i6nzd/a2xngiBE0QvjwOHbXEi4kltiOhcn59l1Qm9pgpuR*pA!/b/dLpIdTT5SAAA&bo=ngK.AQAAAAABAAQ!&rf=viewer_4&t=5"
-                                vl_url = "http://www.xiexiezi.net/huodong/mine/?user_id=" + fromUser										
-                                
-                                response = "<xml>\
+			response = "<xml>\
                                 <ToUserName><![CDATA[" + fromUser + "]]></ToUserName>\
                                 <FromUserName><![CDATA[" + toUser + "]]></FromUserName>\
                                 <CreateTime>12345678</CreateTime>\
@@ -206,80 +205,7 @@ def weixin(request):
                                 </item>\
                                 </Articles>\
                                 </xml>"
-
-		    	elif content == "1":
-		    		vl_title1 = "AA活动助手"
-		    		vl_description1 = "AA活动助手"
-		    		vl_pic_url1 = "http://b87.photo.store.qq.com/psb?/V117jtH91i6nzd/*iBbJ98RLScbg*EF4QwUsi3rYA1zWHBJYq*hw6qM3a4!/b/dODm6DPGfAAA&bo=ngK*AQAAAAABAAU!&rf=viewer_4&t=5"
-                                vl_url1 = "http://www.xiaoxiezi.net/huodong/?user_id=" + fromUser	
-
-		    		vl_title = "发布活动"
-		    		vl_description = "发布活动"
-		    		vl_pic_url = "http://b88.photo.store.qq.com/psb?/V117jtH91i6nzd/a2xngiBE0QvjwOHbXEi4kltiOhcn59l1Qm9pgpuR*pA!/b/dLpIdTT5SAAA&bo=ngK.AQAAAAABAAQ!&rf=viewer_4&t=5"
-                                vl_url = "http://www.xiaoxiezi.net/huodong/?user_id=" + fromUser										
-                                
-                                response = "<xml>\
-                                <ToUserName><![CDATA[" + fromUser + "]]></ToUserName>\
-                                <FromUserName><![CDATA[" + toUser + "]]></FromUserName>\
-                                <CreateTime>12345678</CreateTime>\
-                                <MsgType><![CDATA[news]]></MsgType>\
-                                <ArticleCount>2</ArticleCount>\
-                                <Articles>\
-                                <item>\
-                                <Title><![CDATA[" + vl_title1 + "]]></Title> \
-                                <Description><![CDATA[" + vl_description1 + "]]></Description>\
-                                <PicUrl><![CDATA[" + vl_pic_url1 + "]]></PicUrl>\
-                                <Url><![CDATA[" + vl_url1 + "]]></Url>\
-                                </item>\
-                                <item>\
-                                <Title><![CDATA[" + vl_title + "]]></Title>\
-                                <Description><![CDATA[" + vl_description + "]]></Description>\
-                                <PicUrl><![" + vl_pic_url + "]]></PicUrl>\
-                                <Url><![CDATA[" + vl_url + "]]></Url>\
-                                </item>\
-                                </Articles>\
-                                </xml>"
-		    	else:
-		    		#自动回复功能
-			    	# response = "<xml>\
-        #                         <ToUserName><![CDATA[" + fromUser +"]]></ToUserName>\
-        #                         <FromUserName><![CDATA[" + toUser + "]]></FromUserName>\
-        #                         <CreateTime>1431255793</CreateTime>\
-        #                         <MsgType><![CDATA[text]]></MsgType>\
-        #                         <Content><![CDATA[" + content + "]]></Content>\
-        #                         </xml>"
-        			#qr feature
-        			vl_title1 = "二维码"
-		    		vl_description1 = "二维码"
-		    		vl_pic_url1 = "http://b87.photo.store.qq.com/psb?/V117jtH91i6nzd/*iBbJ98RLScbg*EF4QwUsi3rYA1zWHBJYq*hw6qM3a4!/b/dODm6DPGfAAA&bo=ngK*AQAAAAABAAU!&rf=viewer_4&t=5"
-                                vl_url1 = "http://www.xiaoxiezi.net/huodong/qr/?qr_id=" + 	fromUser +'&words=' + content						
-
-		    		vl_title = "二维码"
-		    		vl_description = "二维码"
-		    		vl_pic_url = "http://b88.photo.store.qq.com/psb?/V117jtH91i6nzd/a2xngiBE0QvjwOHbXEi4kltiOhcn59l1Qm9pgpuR*pA!/b/dLpIdTT5SAAA&bo=ngK.AQAAAAABAAQ!&rf=viewer_4&t=5"
-                                vl_url = "http://www.xiaoxiezi.net/huodong/qr/?qr_id=" + fromUser +'&words=' + content						
-                                
-                                response = "<xml>\
-                                <ToUserName><![CDATA[" + fromUser + "]]></ToUserName>\
-                                <FromUserName><![CDATA[" + toUser + "]]></FromUserName>\
-                                <CreateTime>12345678</CreateTime>\
-                                <MsgType><![CDATA[news]]></MsgType>\
-                                <ArticleCount>2</ArticleCount>\
-                                <Articles>\
-                                <item>\
-                                <Title><![CDATA[" + vl_title1 + "]]></Title> \
-                                <Description><![CDATA[" + vl_description1 + "]]></Description>\
-                                <PicUrl><![CDATA[" + vl_pic_url1 + "]]></PicUrl>\
-                                <Url><![CDATA[" + vl_url1 + "]]></Url>\
-                                </item>\
-                                <item>\
-                                <Title><![CDATA[" + vl_title + "]]></Title>\
-                                <Description><![CDATA[" + vl_description + "]]></Description>\
-                                <PicUrl><![" + vl_pic_url + "]]></PicUrl>\
-                                <Url><![CDATA[" + vl_url + "]]></Url>\
-                                </item>\
-                                </Articles>\
-                                </xml>"
+			
 
 	    	return HttpResponse(response)
 	    else:
