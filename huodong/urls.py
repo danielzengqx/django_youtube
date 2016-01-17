@@ -12,6 +12,8 @@ urlpatterns = patterns('',
     url(r'^join/.*$',  views.join, name='join'),
     url(r'^qr/$',  views.qr, name='qr'),
     url(r'^csv/$', views.write_csv, name='write_csv'),
+    url(r'^douban/.*$',  views.douban, name='douban'),
+
     # url(r'^(?P<ref_id>.*)$', 'views.huodong', name='huodong'), 
 
 	)

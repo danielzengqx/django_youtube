@@ -445,7 +445,11 @@ def qr(request):
 
 
 
-
+import requests
+def douban(request):
+	url = r'http://book.douban.com/chart?icn=index-topchart-nonfiction'
+	r = requests.get(url)
+	return HttpResponse(r.text)
 
 
 
