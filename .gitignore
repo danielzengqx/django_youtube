@@ -42,3 +42,7 @@ Thumbs.db
 # Sublime project
 *-project
 *-workspace
+
+# User Files
+*.csv
+*.xlxs

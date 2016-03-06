@@ -11,6 +11,7 @@ from django.core.cache import cache
 from collections import OrderedDict
 import qrcode
 import csv
+from openpyxl import Workbook
 
 reload(sys)
 sys.setdefaultencoding('utf-8')

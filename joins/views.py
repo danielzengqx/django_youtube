@@ -247,7 +247,7 @@ def weixin(request):
 
 		    		vl_title = "豆瓣读书"
 		    		vl_description = "豆瓣读书"
-		    		vl_pic_url = "http://b88.photo.store.qq.com/psb?/V117jtH91i6nzd/a2xngiBE0QvjwOHbXEi4kltiOhcn59l1Qm9pgpuR*pA!/b/dLpIdTT5SAAA&bo=ngK.AQAAAAABAAQ!&rf=viewer_4&t=5"
+		    		vl_pic_url = "http://b255.photo.store.qq.com/psb?/V117jtH91TtpMB/t7f4NksmVF.mSdSRaxjkLzp3UNwqFwKAzpmvH6.71MY!/b/dCGPBZgBCwAA&bo=FQIgAwAAAAABABM!&rf=viewer_4&t=5"
                                 vl_url = "http://www.xiaoxiezi.net/huodong/douban/"										
                                 
                                 response = "<xml>\
@@ -266,7 +266,7 @@ def weixin(request):
                                 <item>\
                                 <Title><![CDATA[" + vl_title + "]]></Title>\
                                 <Description><![CDATA[" + vl_description + "]]></Description>\
-                                <PicUrl><![" + vl_pic_url + "]]></PicUrl>\
+                                <PicUrl><![CDATA[" + vl_pic_url + "]]></PicUrl>\
                                 <Url><![CDATA[" + vl_url + "]]></Url>\
                                 </item>\
                                 </Articles>\
