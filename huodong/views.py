@@ -12,6 +12,7 @@ from collections import OrderedDict
 import qrcode
 import csv
 from openpyxl import Workbook
+from openpyxl import load_workbook
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -51,12 +52,12 @@ def preview(request):
 	user_id = request.session['user']
 	print "here is user_id %s" % user_id
 	question_table = {\
-						'user_name': '姓名',\
-						'phone_num': '手机',\
-						'wechat_num': '微信',\
-						'academy': '学院',\
-						'major': '专业',\
-						'sex': '性别'}
+						'user_name': r'姓名',\
+						'phone_num': r'手机',\
+						'wechat_num': r'微信',\
+						'academy': r'学院',\
+						'major': r'专业',\
+						'sex': r'性别'}
 
 	if request.method == 'POST':
 		# for key, value in request.POST.iteritems():
@@ -237,11 +238,26 @@ def release(request, user_id, huodong_id):
 
 	release_file = huodong_id + '.csv'
 
+
 	print all_content['questions_preview']
+	print 20*">>"+'here is daniel\n'
+	
+	print type(all_content['questions_preview'])
+
+
+	print 20*"<<"+'end here\n'
 
 	with open(release_file, 'wb') as f:
 		writer = csv.writer(f)
 		writer.writerow(all_content['questions_preview'])
+
+
+	release_xlsx = huodong_id + '.xlsx'
+
+	wb = Workbook()
+	ws = wb.active
+	ws.append(all_content['questions_preview'])
+	wb.save(filename = release_xlsx)
 
 	template = "share_huodong.html"
 	context = {
@@ -323,6 +339,25 @@ def success(request):
 				row_a.append(v)
 			writer.writerow(row_q)
 			writer.writerow(row_a)
+
+
+	huodong_xlsx = join_id + '.xlsx'
+
+	if os.path.isfile(huodong_xlsx):
+		print "xlsx file exists *" + 50*"*"
+		row_a = list()
+		print "xlsx here is q_a:" + 50*"*"
+		print q_a.items()
+		for k, v in q_a.items():
+			row_a.append(v)
+		wb = load_workbook(filename = huodong_xlsx)
+		ws = wb.active
+		ws.append(row_a)
+		wb.save(filename = huodong_xlsx)
+
+
+
+
 
 	# with open(huodong_file, "a") as f:
 	# 	f.writelines(50 * "*" + "\n")
