@@ -14,6 +14,11 @@ import csv
 from openpyxl import Workbook
 from openpyxl import load_workbook
 
+from django.views.decorators.csrf import csrf_exempt
+from lxml import etree
+import hashlib
+import requests
+
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
@@ -481,7 +486,6 @@ def qr(request):
 
 
 
-import requests
 def douban(request):
 	url = r'http://book.douban.com/chart?icn=index-topchart-nonfiction'
 	r = requests.get(url)
@@ -489,4 +493,178 @@ def douban(request):
 
 
 
+def checkSignature(request):
+    signature = request.GET.get('signature',None)
+    timestamp = request.GET.get('timestamp',None)
+    nonce = request.GET.get('nonce',None)
+    echostr = request.GET.get('echostr',None)
+    
+    token = "danieltoken"
 
+    tmplist = [token,timestamp,nonce]
+    tmplist.sort()
+    tmpstr = "%s%s%s"%tuple(tmplist)
+    tmpstr = hashlib.sha1(tmpstr).hexdigest()
+    if tmpstr == signature:
+        return echostr
+    else:
+        return None
+
+def autoReply_tuling(msg, user_id):
+	import ast
+	key='309c1c86c590bb584004774ce9cb01f2'
+	url = 'http://www.tuling123.com/openapi/api?key=%s&info=%s&userid=%s' %(key, msg, user_id)
+	r = requests.post(url)
+	d = ast.literal_eval(r.text)  #transfer unicode dict to python dict
+	reply_text = d['text']
+	return reply_text
+
+
+
+
+@csrf_exempt
+def weixin(request):
+	try:
+	    if request.method == 'GET':
+	    	print request
+	       	response = HttpResponse(checkSignature(request))
+	       	return response
+
+	    elif request.method ==  'POST':
+	    	print "daniel ,here is post!"
+	    	print request.body
+	    	str_xml = request.body #get post data 
+	    	xml = etree.fromstring(str_xml) #parse xml
+	    	print xml
+
+
+	    	msgType = xml.find("MsgType").text
+	    	fromUser = xml.find("FromUserName").text
+	    	toUser = xml.find("ToUserName").text
+	    	#return self.render.reply_text(fromUser,toUser,int(time.time()),u"I'm still in developing, what you typed are:"+content)
+	    	#return autoReply(request)
+	    	if msgType == "event":
+	    		event = xml.find("Event").text
+	    		rawContent = "你好，欢迎关注AAA活动助手，\n发送数字“1”，可发布活动；“0”,可查看自己发不过的活动。发送其他字符，可生产二维码。^_^\n\小鞋子(1129321939)"
+	    		content = unicode(rawContent, "utf-8")
+		    	response = "<xml>\
+							<ToUserName><![CDATA[" + fromUser +"]]></ToUserName>\
+							<FromUserName><![CDATA[" + toUser + "]]></FromUserName>\
+							<CreateTime>1431255793</CreateTime>\
+							<MsgType><![CDATA[text]]></MsgType>\
+							<Content><![CDATA[" + content + "]]></Content>\
+							</xml>"
+
+	    	else:
+		    	content = xml.find("Content").text # get user input content
+		    	if content == "0":
+		    		print "here "
+		    		vl_title1 = "我的活动"
+		    		vl_description1 = "我的活动"
+		    		vl_pic_url1 = "http://qpic.cn/z1xw6oEUp"
+		    		# "http://b87.photo.store.qq.com/psb?/V117jtH91i6nzd/*iBbJ98RLScbg*EF4QwUsi3rYA1zWHBJYq*hw6qM3a4!/b/dODm6DPGfAAA&bo=ngK*AQAAAAABAAU!&rf=viewer_4&t=5"
+                                vl_url1 = "http://www.xiaoxiezi.net/huodong/mine/?user_id=" + fromUser 	
+
+		    		vl_title = "我的活动"
+		    		vl_description = "我的活动"
+		    		vl_pic_url = "http://qpic.cn/z1xw6oEUp"
+		    		# "http://b88.photo.store.qq.com/psb?/V117jtH91i6nzd/a2xngiBE0QvjwOHbXEi4kltiOhcn59l1Qm9pgpuR*pA!/b/dLpIdTT5SAAA&bo=ngK.AQAAAAABAAQ!&rf=viewer_4&t=5"
+                                vl_url = "http://www.xiexiezi.net/huodong/mine/?user_id=" + fromUser										
+                                
+                                response = "<xml>\
+                                <ToUserName><![CDATA[" + fromUser + "]]></ToUserName>\
+                                <FromUserName><![CDATA[" + toUser + "]]></FromUserName>\
+                                <CreateTime>12345678</CreateTime>\
+                                <MsgType><![CDATA[news]]></MsgType>\
+                                <ArticleCount>2</ArticleCount>\
+                                <Articles>\
+                                <item>\
+                                <Title><![CDATA[" + vl_title1 + "]]></Title> \
+                                <Description><![CDATA[" + vl_description1 + "]]></Description>\
+                                <PicUrl><![CDATA[" + vl_pic_url1 + "]]></PicUrl>\
+                                <Url><![CDATA[" + vl_url1 + "]]></Url>\
+                                </item>\
+                                <item>\
+                                <Title><![CDATA[" + vl_title + "]]></Title>\
+                                <Description><![CDATA[" + vl_description + "]]></Description>\
+                                <PicUrl><![" + vl_pic_url + "]]></PicUrl>\
+                                <Url><![CDATA[" + vl_url + "]]></Url>\
+                                </item>\
+                                </Articles>\
+                                </xml>"
+
+		    	elif content == "1":
+		    		vl_title1 = "AA活动助手"
+		    		vl_description1 = "AA活动助手"
+		    		vl_pic_url1 = "http://b87.photo.store.qq.com/psb?/V117jtH91i6nzd/*iBbJ98RLScbg*EF4QwUsi3rYA1zWHBJYq*hw6qM3a4!/b/dODm6DPGfAAA&bo=ngK*AQAAAAABAAU!&rf=viewer_4&t=5"
+                                vl_url1 = "http://www.xiaoxiezi.net/huodong/?user_id=" + fromUser	
+
+		    		vl_title = "发布活动"
+		    		vl_description = "发布活动"
+		    		vl_pic_url = "http://b88.photo.store.qq.com/psb?/V117jtH91i6nzd/a2xngiBE0QvjwOHbXEi4kltiOhcn59l1Qm9pgpuR*pA!/b/dLpIdTT5SAAA&bo=ngK.AQAAAAABAAQ!&rf=viewer_4&t=5"
+                                vl_url = "http://www.xiaoxiezi.net/huodong/?user_id=" + fromUser										
+                                
+                                response = "<xml>\
+                                <ToUserName><![CDATA[" + fromUser + "]]></ToUserName>\
+                                <FromUserName><![CDATA[" + toUser + "]]></FromUserName>\
+                                <CreateTime>12345678</CreateTime>\
+                                <MsgType><![CDATA[news]]></MsgType>\
+                                <ArticleCount>2</ArticleCount>\
+                                <Articles>\
+                                <item>\
+                                <Title><![CDATA[" + vl_title1 + "]]></Title> \
+                                <Description><![CDATA[" + vl_description1 + "]]></Description>\
+                                <PicUrl><![CDATA[" + vl_pic_url1 + "]]></PicUrl>\
+                                <Url><![CDATA[" + vl_url1 + "]]></Url>\
+                                </item>\
+                                <item>\
+                                <Title><![CDATA[" + vl_title + "]]></Title>\
+                                <Description><![CDATA[" + vl_description + "]]></Description>\
+                                <PicUrl><![" + vl_pic_url + "]]></PicUrl>\
+                                <Url><![CDATA[" + vl_url + "]]></Url>\
+                                </item>\
+                                </Articles>\
+                                </xml>"
+
+			else :
+        			#qr feature
+        			vl_title1 = "二维码"
+        			vl_description1 = "二维码"
+        			vl_pic_url1 = "http://b87.photo.store.qq.com/psb?/V117jtH91i6nzd/*iBbJ98RLScbg*EF4QwUsi3rYA1zWHBJYq*hw6qM3a4!/b/dODm6DPGfAAA&bo=ngK*AQAAAAABAAU!&rf=viewer_4&t=5"
+        			vl_url1 = "http://www.xiaoxiezi.net/huodong/qr/?qr_id=" + 	fromUser +'&words=' + content						
+
+		    		vl_title = "二维码"
+		    		vl_description = "二维码"
+		    		vl_pic_url = "http://b88.photo.store.qq.com/psb?/V117jtH91i6nzd/a2xngiBE0QvjwOHbXEi4kltiOhcn59l1Qm9pgpuR*pA!/b/dLpIdTT5SAAA&bo=ngK.AQAAAAABAAQ!&rf=viewer_4&t=5"
+				vl_url = "http://www.xiaoxiezi.net/huodong/qr/?qr_id=" + fromUser +'&words=' + content						
+                    
+				response = "<xml>\
+                                <ToUserName><![CDATA[" + fromUser + "]]></ToUserName>\
+                                <FromUserName><![CDATA[" + toUser + "]]></FromUserName>\
+                                <CreateTime>12345678</CreateTime>\
+                                <MsgType><![CDATA[news]]></MsgType>\
+		                    <ArticleCount>2</ArticleCount>\
+		                    <Articles>\
+		                    <item>\
+		                    <Title><![CDATA[" + vl_title1 + "]]></Title> \
+		                    <Description><![CDATA[" + vl_description1 + "]]></Description>\
+		                    <PicUrl><![CDATA[" + vl_pic_url1 + "]]></PicUrl>\
+		                    <Url><![CDATA[" + vl_url1 + "]]></Url>\
+		                    </item>\
+		                    <item>\
+		                    <Title><![CDATA[" + vl_title + "]]></Title>\
+		                    <Description><![CDATA[" + vl_description + "]]></Description>\
+		                    <PicUrl><![" + vl_pic_url + "]]></PicUrl>\
+		                    <Url><![CDATA[" + vl_url + "]]></Url>\
+		                    </item>\
+		                    </Articles>\
+		                    </xml>"
+
+
+	    	return HttpResponse(response)
+	    else:
+	    	print "here is else %s" % request
+	        return HttpResponse('Hello World')
+
+	except Exception, error: #to print the error
+		print error

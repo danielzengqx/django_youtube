@@ -13,6 +13,7 @@ urlpatterns = patterns('',
     url(r'^qr/$',  views.qr, name='qr'),
     url(r'^csv/$', views.write_csv, name='write_csv'),
     url(r'^douban/.*$',  views.douban, name='douban'),
+    url(r'^weixin$',  views.weixin, name='weixin'),
 
     # url(r'^(?P<ref_id>.*)$', 'views.huodong', name='huodong'), 
 

@@ -12,6 +12,7 @@ from django.views.decorators.csrf import csrf_exempt
 from lxml import etree
 import hashlib
 from huodong.views import gen_qr 
+import requests
 
 def get_ip(request):
 	try:
@@ -137,6 +138,18 @@ def autoReply(request):
 	toUser = xml.find("ToUserName").text
 	return self.render.reply_text(fromUser,toUser,int(time.time()),u"I'm still in developing, what you typed are:"+content)
 
+def autoReply_tuling(msg, user_id):
+	import ast
+	key='309c1c86c590bb584004774ce9cb01f2'
+	url = 'http://www.tuling123.com/openapi/api?key=%s&info=%s&userid=%s' %(key, msg, user_id)
+	r = requests.post(url)
+	d = ast.literal_eval(r.text)  #transfer unicode dict to python dict
+	reply_text = d['text']
+	return reply_text
+
+
+
+
 @csrf_exempt
 def weixin(request):
 	try:
@@ -160,7 +173,7 @@ def weixin(request):
 	    	#return autoReply(request)
 	    	if msgType == "event":
 	    		event = xml.find("Event").text
-	    		rawContent = "你好，欢迎关注AA活动助手\n发送数字“1”，可发布活动。\n回复其他任意字符，将生成二维码。>_< \n\n--- 小鞋子(11293219398888)"
+	    		rawContent = "你好，欢迎关注小鞋子，\n我的主要功能是陪聊。>_< \n\n--- 小鞋子(1129321939)"
 	    		content = unicode(rawContent, "utf-8")
 		    	response = "<xml>\
 							<ToUserName><![CDATA[" + fromUser +"]]></ToUserName>\
@@ -172,106 +185,16 @@ def weixin(request):
 
 	    	else:
 		    	content = xml.find("Content").text # get user input content
-		    	if content == "0":
-		    		vl_title1 = "我的活动"
-		    		vl_description1 = "我的活动"
-		    		vl_pic_url1 = "http://qpic.cn/z1xw6oEUp"
-		    		# "http://b87.photo.store.qq.com/psb?/V117jtH91i6nzd/*iBbJ98RLScbg*EF4QwUsi3rYA1zWHBJYq*hw6qM3a4!/b/dODm6DPGfAAA&bo=ngK*AQAAAAABAAU!&rf=viewer_4&t=5"
-                                vl_url1 = "http://www.xiaoxiezi.net/huodong/mine/?user_id=" + fromUser 	
-
-		    		vl_title = "我的活动"
-		    		vl_description = "我的活动"
-		    		vl_pic_url = "http://qpic.cn/z1xw6oEUp"
-		    		# "http://b88.photo.store.qq.com/psb?/V117jtH91i6nzd/a2xngiBE0QvjwOHbXEi4kltiOhcn59l1Qm9pgpuR*pA!/b/dLpIdTT5SAAA&bo=ngK.AQAAAAABAAQ!&rf=viewer_4&t=5"
-                                vl_url = "http://www.xiexiezi.net/huodong/mine/?user_id=" + fromUser										
-                                
-                                response = "<xml>\
-                                <ToUserName><![CDATA[" + fromUser + "]]></ToUserName>\
+		    	if content:
+		    		result = autoReply_tuling(content,fromUser)
+		    		response = "<xml>\
+                                <ToUserName><![CDATA[" + fromUser +"]]></ToUserName>\
                                 <FromUserName><![CDATA[" + toUser + "]]></FromUserName>\
-                                <CreateTime>12345678</CreateTime>\
-                                <MsgType><![CDATA[news]]></MsgType>\
-                                <ArticleCount>2</ArticleCount>\
-                                <Articles>\
-                                <item>\
-                                <Title><![CDATA[" + vl_title1 + "]]></Title> \
-                                <Description><![CDATA[" + vl_description1 + "]]></Description>\
-                                <PicUrl><![CDATA[" + vl_pic_url1 + "]]></PicUrl>\
-                                <Url><![CDATA[" + vl_url1 + "]]></Url>\
-                                </item>\
-                                <item>\
-                                <Title><![CDATA[" + vl_title + "]]></Title>\
-                                <Description><![CDATA[" + vl_description + "]]></Description>\
-                                <PicUrl><![" + vl_pic_url + "]]></PicUrl>\
-                                <Url><![CDATA[" + vl_url + "]]></Url>\
-                                </item>\
-                                </Articles>\
+                                <CreateTime>1431255793</CreateTime>\
+                                <MsgType><![CDATA[text]]></MsgType>\
+                                <Content><![CDATA[" + result + "]]></Content>\
                                 </xml>"
 
-		    	elif content == "1":
-		    		vl_title1 = "AA活动助手"
-		    		vl_description1 = "AA活动助手"
-		    		vl_pic_url1 = "http://b87.photo.store.qq.com/psb?/V117jtH91i6nzd/*iBbJ98RLScbg*EF4QwUsi3rYA1zWHBJYq*hw6qM3a4!/b/dODm6DPGfAAA&bo=ngK*AQAAAAABAAU!&rf=viewer_4&t=5"
-                                vl_url1 = "http://www.xiaoxiezi.net/huodong/?user_id=" + fromUser	
-
-		    		vl_title = "发布活动"
-		    		vl_description = "发布活动"
-		    		vl_pic_url = "http://b88.photo.store.qq.com/psb?/V117jtH91i6nzd/a2xngiBE0QvjwOHbXEi4kltiOhcn59l1Qm9pgpuR*pA!/b/dLpIdTT5SAAA&bo=ngK.AQAAAAABAAQ!&rf=viewer_4&t=5"
-                                vl_url = "http://www.xiaoxiezi.net/huodong/?user_id=" + fromUser										
-                                
-                                response = "<xml>\
-                                <ToUserName><![CDATA[" + fromUser + "]]></ToUserName>\
-                                <FromUserName><![CDATA[" + toUser + "]]></FromUserName>\
-                                <CreateTime>12345678</CreateTime>\
-                                <MsgType><![CDATA[news]]></MsgType>\
-                                <ArticleCount>2</ArticleCount>\
-                                <Articles>\
-                                <item>\
-                                <Title><![CDATA[" + vl_title1 + "]]></Title> \
-                                <Description><![CDATA[" + vl_description1 + "]]></Description>\
-                                <PicUrl><![CDATA[" + vl_pic_url1 + "]]></PicUrl>\
-                                <Url><![CDATA[" + vl_url1 + "]]></Url>\
-                                </item>\
-                                <item>\
-                                <Title><![CDATA[" + vl_title + "]]></Title>\
-                                <Description><![CDATA[" + vl_description + "]]></Description>\
-                                <PicUrl><![" + vl_pic_url + "]]></PicUrl>\
-                                <Url><![CDATA[" + vl_url + "]]></Url>\
-                                </item>\
-                                </Articles>\
-                                </xml>"
-			elif content == "douban":
-		    		vl_title1 = "豆瓣读书"
-		    		vl_description1 = "豆瓣读书"
-		    		vl_pic_url1 = "http://b87.photo.store.qq.com/psb?/V117jtH91i6nzd/*iBbJ98RLScbg*EF4QwUsi3rYA1zWHBJYq*hw6qM3a4!/b/dODm6DPGfAAA&bo=ngK*AQAAAAABAAU!&rf=viewer_4&t=5"
-                                vl_url1 = "http://www.xiaoxiezi.net/huodong/douban/"	
-
-		    		vl_title = "豆瓣读书"
-		    		vl_description = "豆瓣读书"
-		    		vl_pic_url = "http://b255.photo.store.qq.com/psb?/V117jtH91TtpMB/t7f4NksmVF.mSdSRaxjkLzp3UNwqFwKAzpmvH6.71MY!/b/dCGPBZgBCwAA&bo=FQIgAwAAAAABABM!&rf=viewer_4&t=5"
-                                vl_url = "http://www.xiaoxiezi.net/huodong/douban/"										
-                                
-                                response = "<xml>\
-                                <ToUserName><![CDATA[" + fromUser + "]]></ToUserName>\
-                                <FromUserName><![CDATA[" + toUser + "]]></FromUserName>\
-                                <CreateTime>12345678</CreateTime>\
-                                <MsgType><![CDATA[news]]></MsgType>\
-                                <ArticleCount>2</ArticleCount>\
-                                <Articles>\
-                                <item>\
-                                <Title><![CDATA[" + vl_title1 + "]]></Title> \
-                                <Description><![CDATA[" + vl_description1 + "]]></Description>\
-                                <PicUrl><![CDATA[" + vl_pic_url1 + "]]></PicUrl>\
-                                <Url><![CDATA[" + vl_url1 + "]]></Url>\
-                                </item>\
-                                <item>\
-                                <Title><![CDATA[" + vl_title + "]]></Title>\
-                                <Description><![CDATA[" + vl_description + "]]></Description>\
-                                <PicUrl><![CDATA[" + vl_pic_url + "]]></PicUrl>\
-                                <Url><![CDATA[" + vl_url + "]]></Url>\
-                                </item>\
-                                </Articles>\
-                                </xml>"
-		    	else:
 		    		#自动回复功能
 			    	# response = "<xml>\
         #                         <ToUserName><![CDATA[" + fromUser +"]]></ToUserName>\
@@ -281,37 +204,37 @@ def weixin(request):
         #                         <Content><![CDATA[" + content + "]]></Content>\
         #                         </xml>"
         			#qr feature
-        			vl_title1 = "二维码"
-		    		vl_description1 = "二维码"
-		    		vl_pic_url1 = "http://b87.photo.store.qq.com/psb?/V117jtH91i6nzd/*iBbJ98RLScbg*EF4QwUsi3rYA1zWHBJYq*hw6qM3a4!/b/dODm6DPGfAAA&bo=ngK*AQAAAAABAAU!&rf=viewer_4&t=5"
-                                vl_url1 = "http://www.xiaoxiezi.net/huodong/qr/?qr_id=" + 	fromUser +'&words=' + content						
+        # 			vl_title1 = "二维码"
+		    		# vl_description1 = "二维码"
+		    		# vl_pic_url1 = "http://b87.photo.store.qq.com/psb?/V117jtH91i6nzd/*iBbJ98RLScbg*EF4QwUsi3rYA1zWHBJYq*hw6qM3a4!/b/dODm6DPGfAAA&bo=ngK*AQAAAAABAAU!&rf=viewer_4&t=5"
+        #                         vl_url1 = "http://www.xiaoxiezi.net/huodong/qr/?qr_id=" + 	fromUser +'&words=' + content						
 
-		    		vl_title = "二维码"
-		    		vl_description = "二维码"
-		    		vl_pic_url = "http://b88.photo.store.qq.com/psb?/V117jtH91i6nzd/a2xngiBE0QvjwOHbXEi4kltiOhcn59l1Qm9pgpuR*pA!/b/dLpIdTT5SAAA&bo=ngK.AQAAAAABAAQ!&rf=viewer_4&t=5"
-                                vl_url = "http://www.xiaoxiezi.net/huodong/qr/?qr_id=" + fromUser +'&words=' + content						
+		    		# vl_title = "二维码"
+		    		# vl_description = "二维码"
+		    		# vl_pic_url = "http://b88.photo.store.qq.com/psb?/V117jtH91i6nzd/a2xngiBE0QvjwOHbXEi4kltiOhcn59l1Qm9pgpuR*pA!/b/dLpIdTT5SAAA&bo=ngK.AQAAAAABAAQ!&rf=viewer_4&t=5"
+        #                         vl_url = "http://www.xiaoxiezi.net/huodong/qr/?qr_id=" + fromUser +'&words=' + content						
                                 
-                                response = "<xml>\
-                                <ToUserName><![CDATA[" + fromUser + "]]></ToUserName>\
-                                <FromUserName><![CDATA[" + toUser + "]]></FromUserName>\
-                                <CreateTime>12345678</CreateTime>\
-                                <MsgType><![CDATA[news]]></MsgType>\
-                                <ArticleCount>2</ArticleCount>\
-                                <Articles>\
-                                <item>\
-                                <Title><![CDATA[" + vl_title1 + "]]></Title> \
-                                <Description><![CDATA[" + vl_description1 + "]]></Description>\
-                                <PicUrl><![CDATA[" + vl_pic_url1 + "]]></PicUrl>\
-                                <Url><![CDATA[" + vl_url1 + "]]></Url>\
-                                </item>\
-                                <item>\
-                                <Title><![CDATA[" + vl_title + "]]></Title>\
-                                <Description><![CDATA[" + vl_description + "]]></Description>\
-                                <PicUrl><![" + vl_pic_url + "]]></PicUrl>\
-                                <Url><![CDATA[" + vl_url + "]]></Url>\
-                                </item>\
-                                </Articles>\
-                                </xml>"
+        #                         response = "<xml>\
+        #                         <ToUserName><![CDATA[" + fromUser + "]]></ToUserName>\
+        #                         <FromUserName><![CDATA[" + toUser + "]]></FromUserName>\
+        #                         <CreateTime>12345678</CreateTime>\
+        #                         <MsgType><![CDATA[news]]></MsgType>\
+        #                         <ArticleCount>2</ArticleCount>\
+        #                         <Articles>\
+        #                         <item>\
+        #                         <Title><![CDATA[" + vl_title1 + "]]></Title> \
+        #                         <Description><![CDATA[" + vl_description1 + "]]></Description>\
+        #                         <PicUrl><![CDATA[" + vl_pic_url1 + "]]></PicUrl>\
+        #                         <Url><![CDATA[" + vl_url1 + "]]></Url>\
+        #                         </item>\
+        #                         <item>\
+        #                         <Title><![CDATA[" + vl_title + "]]></Title>\
+        #                         <Description><![CDATA[" + vl_description + "]]></Description>\
+        #                         <PicUrl><![" + vl_pic_url + "]]></PicUrl>\
+        #                         <Url><![CDATA[" + vl_url + "]]></Url>\
+        #                         </item>\
+        #                         </Articles>\
+        #                         </xml>"
 
 	    	return HttpResponse(response)
 	    else:
